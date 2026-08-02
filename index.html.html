@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הדס פסטרנק | מחבר שטח לטכנולוגיה</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'paper': '#F9F7F2',
+                        'sage': '#556B2F',
+                        'charcoal': '#1A1A1A',
+                    },
+                    fontFamily: {
+                        sans: ['Rubik', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root { --accent: #556B2F; }
+        body { background-color: #F9F7F2; color: #1A1A1A; overflow-x: hidden; }
+        
+        .hero-name {
+            font-size: clamp(3.5rem, 12vw, 9rem);
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+        }
+
+        .label-tiny {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .grain::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .custom-button {
+            transition: all 0.3s ease;
+            border: 1.5px solid #1A1A1A;
+        }
+        .custom-button:hover { background-color: #1A1A1A; color: #F9F7F2; }
+
+        [data-en] { display: none; }
+        html[lang="en"] [data-en] { display: inline-block; }
+        html[lang="en"] [data-he] { display: none; }
+        
+        .feature-card {
+            border-top: 1px solid rgba(26, 26, 26, 0.1);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body class="grain">
+
+    <nav class="fixed top-0 w-full p-6 flex justify-between items-start z-40">
+        <div class="label-tiny">
+            <span data-he="הדס פסטרנק // שטח וטכנולוגיה" data-en="HADAS PASTERNAK // FIELD & TECH">הדס פסטרנק // שטח וטכנולוגיה</span>
+        </div>
+        <button onclick="toggleLang()" class="font-bold text-xs border-b-2 border-sage">
+            <span data-he="ENGLISH" data-en="עברית">ENGLISH</span>
+        </button>
+    </nav>
+
+    <main>
+        <!-- Section 1: Hero -->
+        <section class="min-h-[100dvh] flex flex-col justify-center px-6 lg:px-20 pt-20">
+            <h1 class="hero-name mb-6">
+                <span data-he="הדס<br>פסטרנק" data-en="HADAS<br>PASTERNAK">הדס<br>פסטרנק</span>
+            </h1>
+            
+            <p class="text-xl lg:text-3xl max-w-3xl font-light mb-12 leading-tight">
+                <span data-he="מחבר שטח לטכנולוגיה: פתרון בעיות, תפעול פרויקטים ותיעוד חכם ברחפנים." 
+                      data-en="Bridging Field Ops & Tech: Solving problems, project execution, and smart drone documentation.">
+                    מחבר שטח לטכנולוגיה: פתרון בעיות, תפעול פרויקטים ותיעוד חכם ברחפנים.
+                </span>
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 border-t border-charcoal/10 pt-8">
+                <div>
+                    <span class="label-tiny block mb-2" data-he="מומחיות שטח" data-en="FIELD EXPERTISE">מומחיות שטח</span>
+                    <p class="text-sm" data-he="אקוסטיקה, הידרולוגיה ומדידות מבוססות רחפן." data-en="Acoustics, Hydrology, and Drone-based surveys.">אקוסטיקה, הידרולוגיה ומדידות מבוססות רחפן.</p>
+                </div>
+                <div>
+                    <span class="label-tiny block mb-2" data-he="ייעול תהליכים" data-en="PROCESS OPTIMIZATION">ייעול תהליכים</span>
+                    <p class="text-sm" data-he="הפיכת עבודה סיזיפית לאוטומטית - מהצעות מחיר ועד גבייה." data-en="Turning tedious work into automation - from quotes to billing.">הפיכת עבודה סיזיפית לאוטומטית - מהצעות מחיר ועד גבייה.</p>
+                </div>
+                <div>
+                    <span class="label-tiny block mb-2" data-he="סטטוס נוכחי" data-en="CURRENT STATUS">סטטוס נוכחי</span>
+                    <p class="text-sm" data-he="מנהל אופרציה בחברת ייעוץ סביבתי, בונה את הכלים הבאים." data-en="Ops Manager at Env. Consulting, building the next tools.">מנהל אופרציה בחברת ייעוץ סביבתי, בונה את הכלים הבאים.</p>
+                </div>
+            </div>
+
+            <div class="flex gap-6 items-center">
+                <a href="#contact" class="custom-button px-8 py-3 font-bold uppercase text-xs tracking-widest">
+                    <span data-he="ליצירת קשר" data-en="GET IN TOUCH">ליצירת קשר</span>
+                </a>
+                <a href="mailto:hadaspasternak1@gmail.com" class="text-xs font-bold border-b border-charcoal">EMAIL</a>
+            </div>
+        </section>
+
+        <!-- Section 2: The Value (The Real Content) -->
+        <section class="bg-sage text-paper px-6 lg:px-20 py-24">
+            <div class="max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div>
+                    <span class="label-tiny block mb-8 opacity-60" data-he="מה אני מביא לשולחן" data-en="WHAT I BRING">מה אני מביא לשולחן</span>
+                    <h2 class="text-4xl lg:text-6xl font-bold mb-8 leading-[0.9]">
+                        <span data-he="הפרטים הקטנים<br>שחוסכים כסף גדול." data-en="Small details,<br>big savings.">הפרטים הקטנים<br>שחוסכים כסף גדול.</span>
+                    </h2>
+                </div>
+                <div class="space-y-12">
+                    <div class="feature-card">
+                        <h3 class="font-bold mb-3" data-he="איתור כשלי תכנון בשטח" data-en="Identifying Design Flaws">איתור כשלי תכנון בשטח</h3>
+                        <p class="opacity-80 text-sm leading-relaxed" data-he="לא רק מודד, אלא מבין את המשמעות. דוגמה: זיהוי טעות בחישוב זרימת מים בפרויקט שמנע עיכובים יקרים והוצאות מיותרות ליזם." data-en="I don't just measure; I analyze. Example: Identified a water flow calculation error that saved the developer significant costs and delays.">
+                            לא רק מודד, אלא מבין את המשמעות. דוגמה: זיהוי טעות בחישוב זרימת מים בפרויקט שמנע עיכובים יקרים והוצאות מיותרות ליזם.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h3 class="font-bold mb-3" data-he="ליווי סטטוטורי מלא" data-en="End-to-End Project Support">ליווי סטטוטורי מלא</h3>
+                        <p class="opacity-80 text-sm leading-relaxed" data-he="מכיר את התהליך מקניית הקרקע ועד טופס 4. כותב דוחות אקוסטיים, מבצע סיורי שטח והטסות רחפן לתיעוד הידרולוגי וסטטוס ביצוע." data-en="Experience from land acquisition to occupancy permits. Writing acoustic reports, site surveys, and drone mapping for hydrology and status.">
+                            מכיר את התהליך מקניית הקרקע ועד טופס 4. כותב דוחות אקוסטיים, מבצע סיורי שטח והטסות רחפן לתיעוד הידרולוגי וסטטוס ביצוע.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h3 class="font-bold mb-3" data-he="ערך מוסף ויזואלי" data-en="Visual Value-Add">ערך מוסף ויזואלי</h3>
+                        <p class="opacity-80 text-sm leading-relaxed" data-he="משלב יכולות עריכת וידאו וצילום אקסטרים ליצירת סרטוני תדמית ותיעוד פרויקטים עבור הלקוחות - 'על הדרך', כחלק מהשירות." data-en="Combining video editing and drone skills to create promo and status videos for clients as part of the service workflow.">
+                            משלב יכולות עריכת וידאו וצילום אקסטרים ליצירת סרטוני תדמית ותיעוד פרויקטים עבור הלקוחות - 'על הדרך', כחלק מהשירות.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Contact -->
+        <section id="contact" class="px-6 lg:px-20 py-24 bg-paper">
+            <div class="max-w-4xl flex flex-col md:flex-row gap-16">
+                <div class="md:w-1/2">
+                    <span class="label-tiny block mb-8" data-he="בוא נדבר" data-en="CONTACT">בוא נדבר</span>
+                    <h2 class="text-3xl font-bold mb-6" data-he="צריך עיניים בשטח או אוטומציה במשרד?" data-en="Need field insights or office automation?">צריך עיניים בשטח או אוטומציה במשרד?</h2>
+                    <p class="opacity-70 mb-8" data-he="אני תמיד מחפש את האתגר הבא שישלב טכנולוגיה, יעילות וביצוע מעולה." data-en="Always looking for the next challenge combining tech, efficiency, and execution.">אני תמיד מחפש את האתגר הבא שישלב טכנולוגיה, יעילות וביצוע מעולה.</p>
+                    
+                    <div class="space-y-2 text-sm font-bold">
+                        <p>055-886-9069</p>
+                        <p>hadaspasternak1@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 bg-charcoal/5 p-8 rounded-lg">
+                    <form id="contactForm" class="space-y-6">
+                        <input type="text" name="_gotcha" class="hidden" tabindex="-1">
+                        <div>
+                            <label class="label-tiny block mb-2" data-he="שם" data-en="NAME">שם</label>
+                            <input type="text" name="name" required class="w-full bg-transparent border-b border-charcoal/20 py-2 focus:outline-none focus:border-sage transition-colors">
+                        </div>
+                        <div>
+                            <label class="label-tiny block mb-2" data-he="הודעה" data-en="MESSAGE">הודעה</label>
+                            <textarea name="message" rows="3" required class="w-full bg-transparent border-b border-charcoal/20 py-2 focus:outline-none focus:border-sage transition-colors"></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn" class="custom-button w-full py-4 font-bold uppercase text-xs tracking-widest">
+                            <span data-he="שלח" data-en="SEND">שלח</span>
+                        </button>
+                        <p id="formStatus" class="text-xs font-bold mt-2"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="p-6 border-t border-charcoal/10 flex justify-between items-center text-[9px] uppercase tracking-widest opacity-40">
+        <div>© HADAS PASTERNAK 2024</div>
+        <div class="flex gap-4">
+            <a href="#">LINKEDIN</a>
+            <span data-he="שטח · רחפנים · אוטומציה" data-en="FIELD · DRONES · AUTOMATION">שטח · רחפנים · אוטומציה</span>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLang() {
+            const html = document.documentElement;
+            const isHe = html.getAttribute('lang') === 'he';
+            html.setAttribute('lang', isHe ? 'en' : 'he');
+            html.setAttribute('dir', isHe ? 'ltr' : 'rtl');
+            localStorage.setItem('lang', isHe ? 'en' : 'he');
+        }
+
+        const savedLang = localStorage.getItem('lang');
+        if (savedLang) {
+            document.documentElement.setAttribute('lang', savedLang);
+            document.documentElement.setAttribute('dir', savedLang === 'he' ? 'rtl' : 'ltr');
+        }
+
+        const WEBHOOK_URL = "PASTE_YOUR_N8N_URL_HERE";
+        const form = document.getElementById('contactForm');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (form.elements['_gotcha'].value) return;
+            
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('formStatus');
+            btn.disabled = true;
+            status.textContent = "...";
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            data.owner = "Hadas Pasternak";
+
+            try {
+                const res = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    status.textContent = "נשלח בהצלחה / Sent!";
+                    form.reset();
+                } else throw new Error();
+            } catch {
+                status.innerHTML = `שגיאה. שלח למייל: <a href="mailto:hadaspasternak1@gmail.com" class="underline">hadaspasternak1@gmail.com</a>`;
+            } finally { btn.disabled = false; }
+        });
+    </script>
+</body>
+</html>
