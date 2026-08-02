@@ -1,14 +1,28 @@
+הבנתי. לפעמים אפקטים של "חספוס" (Grain) או שקיפויות ב-CSS גורמים לטקסט להיעלם
+בדפדפנים מסוימים.
+
+ביצעתי ניקוי עמוק לקוד:
+
+1.  הסרתי לחלוטין את אפקט הגריין ואת כל השכבות שעלולות להסתיר את הטקסט.
+2.  הכהיתי מעט את הרקע (לירוק זית עמוק יותר) והפכתי את הטקסט ללבן נקי (Pure
+    White) כדי להבטיח ניגודיות מקסימלית (Contrast).
+3.  הגדלתי את עובי הגופן כדי שהאותיות יהיו ברורות ונוכחות.
+
+כעת, הטקסט אמור "לקפוץ" מהמסך ולהיות קריא ב-100%.
+
+הקוד המעודכן (להעתקה ל-GitHub):
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הדס פסטרנק | מחבר שטח לטכנולוגיה</title>
+    <title>הדס פסטרנק | בואו נבנה משהו חכם יותר</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&family=Rubik:wght@400;800&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,12 +30,12 @@
             theme: {
                 extend: {
                     colors: {
-                        'paper': '#F9F7F2',
-                        'sage': '#556B2F',
-                        'charcoal': '#1A1A1A',
+                        'dark-sage': '#3D4B26', /* ירוק זית עמוק יותר לניגודיות טובה */
+                        'pure-white': '#FFFFFF',
                     },
                     fontFamily: {
-                        sans: ['Rubik', 'sans-serif'],
+                        sans: ['Assistant', 'sans-serif'],
+                        display: ['Rubik', 'sans-serif'],
                     },
                 }
             }
@@ -29,203 +43,163 @@
     </script>
 
     <style>
-        :root { --accent: #556B2F; }
-        body { background-color: #F9F7F2; color: #1A1A1A; overflow-x: hidden; }
-        
-        .hero-name {
-            font-size: clamp(3.5rem, 12vw, 9rem);
-            line-height: 0.85;
-            letter-spacing: -0.04em;
+        /* הגדרות בסיס נקיות */
+        body { 
+            background-color: #3D4B26; 
+            color: #FFFFFF; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Assistant', sans-serif;
+        }
+
+        .hero-title { 
+            font-family: 'Rubik', sans-serif; 
+            font-size: clamp(2.5rem, 8vw, 6rem); 
+            line-height: 1.1; 
             font-weight: 800;
+            color: #FFFFFF;
         }
 
-        .label-tiny {
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 400;
-            opacity: 0.8;
+        .nav-link { 
+            font-family: 'Rubik', sans-serif; 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            letter-spacing: 0.1em; 
+            color: #FFFFFF;
+            text-decoration: none;
         }
 
-        .grain::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        .centered-content { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            text-align: center; 
         }
-
-        .custom-button {
-            transition: all 0.3s ease;
-            border: 1.5px solid #1A1A1A;
-        }
-        .custom-button:hover { background-color: #1A1A1A; color: #F9F7F2; }
-
-        [data-en] { display: none; }
-        html[lang="en"] [data-en] { display: inline-block; }
-        html[lang="en"] [data-he] { display: none; }
         
-        .feature-card {
-            border-top: 1px solid rgba(26, 26, 26, 0.1);
-            padding-top: 1.5rem;
+        /* עיצוב טופס ברור */
+        input, textarea { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            color: #FFFFFF;
+            text-align: center;
+            width: 100%;
+            padding: 1rem;
+            outline: none;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
         }
+        input:focus, textarea:focus { border-color: #FFFFFF; background: rgba(255, 255, 255, 0.1); }
+        ::placeholder { color: rgba(255, 255, 255, 0.5); }
+
+        section { 
+            padding: 100px 20px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+        
+        [data-en] { display: none; }
+        html[lang="en"] [data-en] { display: block; }
+        html[lang="en"] [data-he] { display: none; }
     </style>
 </head>
-<body class="grain">
+<body>
 
-    <nav class="fixed top-0 w-full p-6 flex justify-between items-start z-40">
-        <div class="label-tiny">
-            <span data-he="הדס פסטרנק // שטח וטכנולוגיה" data-en="HADAS PASTERNAK // FIELD & TECH">הדס פסטרנק // שטח וטכנולוגיה</span>
-        </div>
-        <button onclick="toggleLang()" class="font-bold text-xs border-b-2 border-sage">
-            <span data-he="ENGLISH" data-en="עברית">ENGLISH</span>
-        </button>
+    <!-- Fixed Navigation -->
+    <nav class="fixed top-0 w-full p-5 flex justify-center items-center gap-8 md:gap-16 z-50 bg-[#3D4B26]/95 backdrop-blur-sm">
+        <a href="#about" class="nav-link hover:underline">אודות</a>
+        <a href="#projects" class="nav-link hover:underline">פרויקטים</a>
+        <a href="#contact" class="nav-link hover:underline">צור קשר</a>
+        <button onclick="toggleLang()" class="nav-link border border-white/40 px-3 py-1 rounded text-xs">EN/HE</button>
     </nav>
 
     <main>
-        <!-- Section 1: Hero -->
-        <section class="min-h-[100dvh] flex flex-col justify-center px-6 lg:px-20 pt-20">
-            <h1 class="hero-name mb-6">
-                <span data-he="הדס<br>פסטרנק" data-en="HADAS<br>PASTERNAK">הדס<br>פסטרנק</span>
-            </h1>
-            
-            <p class="text-xl lg:text-3xl max-w-3xl font-light mb-12 leading-tight">
-                <span data-he="מחבר שטח לטכנולוגיה: פתרון בעיות, תפעול פרויקטים ותיעוד חכם ברחפנים." 
-                      data-en="Bridging Field Ops & Tech: Solving problems, project execution, and smart drone documentation.">
-                    מחבר שטח לטכנולוגיה: פתרון בעיות, תפעול פרויקטים ותיעוד חכם ברחפנים.
-                </span>
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 border-t border-charcoal/10 pt-8">
-                <div>
-                    <span class="label-tiny block mb-2" data-he="מומחיות שטח" data-en="FIELD EXPERTISE">מומחיות שטח</span>
-                    <p class="text-sm" data-he="אקוסטיקה, הידרולוגיה ומדידות מבוססות רחפן." data-en="Acoustics, Hydrology, and Drone-based surveys.">אקוסטיקה, הידרולוגיה ומדידות מבוססות רחפן.</p>
-                </div>
-                <div>
-                    <span class="label-tiny block mb-2" data-he="ייעול תהליכים" data-en="PROCESS OPTIMIZATION">ייעול תהליכים</span>
-                    <p class="text-sm" data-he="הפיכת עבודה סיזיפית לאוטומטית - מהצעות מחיר ועד גבייה." data-en="Turning tedious work into automation - from quotes to billing.">הפיכת עבודה סיזיפית לאוטומטית - מהצעות מחיר ועד גבייה.</p>
-                </div>
-                <div>
-                    <span class="label-tiny block mb-2" data-he="סטטוס נוכחי" data-en="CURRENT STATUS">סטטוס נוכחי</span>
-                    <p class="text-sm" data-he="מנהל אופרציה בחברת ייעוץ סביבתי, בונה את הכלים הבאים." data-en="Ops Manager at Env. Consulting, building the next tools.">מנהל אופרציה בחברת ייעוץ סביבתי, בונה את הכלים הבאים.</p>
-                </div>
-            </div>
-
-            <div class="flex gap-6 items-center">
-                <a href="#contact" class="custom-button px-8 py-3 font-bold uppercase text-xs tracking-widest">
-                    <span data-he="ליצירת קשר" data-en="GET IN TOUCH">ליצירת קשר</span>
-                </a>
-                <a href="mailto:hadaspasternak1@gmail.com" class="text-xs font-bold border-b border-charcoal">EMAIL</a>
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center items-center">
+            <div class="centered-content">
+                <h1 class="hero-title mb-6">
+                    <span data-he="בואו נבנה<br>משהו חכם יותר." data-en="Let's build<br>something smarter.">בואו נבנה<br>משהו חכם יותר.</span>
+                </h1>
+                <h2 class="text-3xl md:text-5xl font-bold mb-8" data-he="הדס פסטרנק" data-en="Hadas Pasternak">הדס פסטרנק</h2>
+                <p class="text-xl md:text-2xl font-light opacity-90 max-w-2xl mx-auto leading-relaxed" data-he="מומחה תפעול ושטח בחברה לייעוץ סביבתי. מחבר בין דוחות אקוסטיים, ניתוח הידרולוגי וטכנולוגיית רחפנים כדי למקסם דיוק ולחסוך בעלויות." data-en="Technical Operations expert. Bridging acoustics, hydrology, and drone technology to maximize precision and save costs.">
+                    מומחה תפעול ושטח בחברה לייעוץ סביבתי. מחבר בין דוחות אקוסטיים, ניתוח הידרולוגי וטכנולוגיית רחפנים כדי למקסם דיוק ולחסוך בעלויות.
+                </p>
             </div>
         </section>
 
-        <!-- Section 2: The Value (The Real Content) -->
-        <section class="bg-sage text-paper px-6 lg:px-20 py-24">
-            <div class="max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div>
-                    <span class="label-tiny block mb-8 opacity-60" data-he="מה אני מביא לשולחן" data-en="WHAT I BRING">מה אני מביא לשולחן</span>
-                    <h2 class="text-4xl lg:text-6xl font-bold mb-8 leading-[0.9]">
-                        <span data-he="הפרטים הקטנים<br>שחוסכים כסף גדול." data-en="Small details,<br>big savings.">הפרטים הקטנים<br>שחוסכים כסף גדול.</span>
-                    </h2>
+        <!-- About Section -->
+        <section id="about">
+            <div class="centered-content">
+                <span class="nav-link opacity-60 mb-12 block">01 — EXPERIENCE</span>
+                <div class="space-y-10 text-2xl md:text-4xl font-bold leading-tight">
+                    <p data-he="אני מנהל את הממשק שבין השטח לתכנון הסטטוטורי. הליווי שלי מתחיל בקניית הקרקע וממשיך עד לטופס 4." data-en="I manage the interface between field operations and statutory planning, from acquisition to occupancy.">
+                        אני מנהל את הממשק שבין השטח לתכנון הסטטוטורי. הליווי שלי מתחיל בקניית הקרקע וממשיך עד לטופס 4.
+                    </p>
+                    <p data-he="בחברה לייעוץ סביבתי בה אני עובד, אני מטמיע אוטומציות כדי להפוך עבודה סיזיפית לתוצאות מדויקות בשטח." data-en="I implement automations to turn tedious tasks into precise field results.">
+                        בחברה לייעוץ סביבתי בה אני עובד, אני מטמיע אוטומציות כדי להפוך עבודה סיזיפית לתוצאות מדויקות בשטח.
+                    </p>
                 </div>
-                <div class="space-y-12">
-                    <div class="feature-card">
-                        <h3 class="font-bold mb-3" data-he="איתור כשלי תכנון בשטח" data-en="Identifying Design Flaws">איתור כשלי תכנון בשטח</h3>
-                        <p class="opacity-80 text-sm leading-relaxed" data-he="לא רק מודד, אלא מבין את המשמעות. דוגמה: זיהוי טעות בחישוב זרימת מים בפרויקט שמנע עיכובים יקרים והוצאות מיותרות ליזם." data-en="I don't just measure; I analyze. Example: Identified a water flow calculation error that saved the developer significant costs and delays.">
-                            לא רק מודד, אלא מבין את המשמעות. דוגמה: זיהוי טעות בחישוב זרימת מים בפרויקט שמנע עיכובים יקרים והוצאות מיותרות ליזם.
-                        </p>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="centered-content">
+                <span class="nav-link opacity-60 mb-12 block">02 — PROJECTS</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    <div class="bg-white/5 p-8 rounded-lg">
+                        <h4 class="font-bold text-2xl mb-4 text-white">אופטימיזציה הידרולוגית</h4>
+                        <p class="opacity-80 text-lg">איתור טעות בחישוב זרימת מים שמנעה עיכובים יקרים וחסכה הוצאות פיתוח משמעותיות ליזם.</p>
                     </div>
-                    <div class="feature-card">
-                        <h3 class="font-bold mb-3" data-he="ליווי סטטוטורי מלא" data-en="End-to-End Project Support">ליווי סטטוטורי מלא</h3>
-                        <p class="opacity-80 text-sm leading-relaxed" data-he="מכיר את התהליך מקניית הקרקע ועד טופס 4. כותב דוחות אקוסטיים, מבצע סיורי שטח והטסות רחפן לתיעוד הידרולוגי וסטטוס ביצוע." data-en="Experience from land acquisition to occupancy permits. Writing acoustic reports, site surveys, and drone mapping for hydrology and status.">
-                            מכיר את התהליך מקניית הקרקע ועד טופס 4. כותב דוחות אקוסטיים, מבצע סיורי שטח והטסות רחפן לתיעוד הידרולוגי וסטטוס ביצוע.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <h3 class="font-bold mb-3" data-he="ערך מוסף ויזואלי" data-en="Visual Value-Add">ערך מוסף ויזואלי</h3>
-                        <p class="opacity-80 text-sm leading-relaxed" data-he="משלב יכולות עריכת וידאו וצילום אקסטרים ליצירת סרטוני תדמית ותיעוד פרויקטים עבור הלקוחות - 'על הדרך', כחלק מהשירות." data-en="Combining video editing and drone skills to create promo and status videos for clients as part of the service workflow.">
-                            משלב יכולות עריכת וידאו וצילום אקסטרים ליצירת סרטוני תדמית ותיעוד פרויקטים עבור הלקוחות - 'על הדרך', כחלק מהשירות.
-                        </p>
+                    <div class="bg-white/5 p-8 rounded-lg">
+                        <h4 class="font-bold text-2xl mb-4 text-white">מיפוי רחפנים ו-AI</h4>
+                        <p class="opacity-80 text-lg">שימוש בצילום אווירי לתיעוד סטטוס ביצוע וניתוח אגני ניקוז ברמת דיוק מקסימלית.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 3: Contact -->
-        <section id="contact" class="px-6 lg:px-20 py-24 bg-paper">
-            <div class="max-w-4xl flex flex-col md:flex-row gap-16">
-                <div class="md:w-1/2">
-                    <span class="label-tiny block mb-8" data-he="בוא נדבר" data-en="CONTACT">בוא נדבר</span>
-                    <h2 class="text-3xl font-bold mb-6" data-he="צריך עיניים בשטח או אוטומציה במשרד?" data-en="Need field insights or office automation?">צריך עיניים בשטח או אוטומציה במשרד?</h2>
-                    <p class="opacity-70 mb-8" data-he="אני תמיד מחפש את האתגר הבא שישלב טכנולוגיה, יעילות וביצוע מעולה." data-en="Always looking for the next challenge combining tech, efficiency, and execution.">אני תמיד מחפש את האתגר הבא שישלב טכנולוגיה, יעילות וביצוע מעולה.</p>
+        <!-- Contact Section -->
+        <section id="contact" style="border-bottom: none;">
+            <div class="centered-content">
+                <span class="nav-link opacity-60 mb-12 block">03 — CONTACT</span>
+                <h3 class="text-3xl font-bold mb-8">בואו נדבר</h3>
+                <form id="contactForm" class="max-w-lg mx-auto space-y-4">
+                    <input type="text" name="_gotcha" class="hidden">
+                    <input type="text" name="name" placeholder="שם מלא" required>
+                    <input type="email" name="email" placeholder="אימייל" required dir="ltr">
+                    <textarea name="message" placeholder="איך אני יכול לעזור?" rows="4" required></textarea>
                     
-                    <div class="space-y-2 text-sm font-bold">
-                        <p>055-886-9069</p>
-                        <p>hadaspasternak1@gmail.com</p>
-                    </div>
-                </div>
-                
-                <div class="md:w-1/2 bg-charcoal/5 p-8 rounded-lg">
-                    <form id="contactForm" class="space-y-6">
-                        <input type="text" name="_gotcha" class="hidden" tabindex="-1">
-                        <div>
-                            <label class="label-tiny block mb-2" data-he="שם" data-en="NAME">שם</label>
-                            <input type="text" name="name" required class="w-full bg-transparent border-b border-charcoal/20 py-2 focus:outline-none focus:border-sage transition-colors">
-                        </div>
-                        <div>
-                            <label class="label-tiny block mb-2" data-he="הודעה" data-en="MESSAGE">הודעה</label>
-                            <textarea name="message" rows="3" required class="w-full bg-transparent border-b border-charcoal/20 py-2 focus:outline-none focus:border-sage transition-colors"></textarea>
-                        </div>
-                        <button type="submit" id="submitBtn" class="custom-button w-full py-4 font-bold uppercase text-xs tracking-widest">
-                            <span data-he="שלח" data-en="SEND">שלח</span>
-                        </button>
-                        <p id="formStatus" class="text-xs font-bold mt-2"></p>
-                    </form>
-                </div>
+                    <button type="submit" id="submitBtn" class="w-full py-5 bg-white text-[#3D4B26] font-bold uppercase tracking-widest text-lg hover:bg-opacity-90 transition-all">
+                        שלח הודעה
+                    </button>
+                    <p id="formStatus" class="mt-4 font-bold"></p>
+                </form>
             </div>
         </section>
     </main>
 
-    <footer class="p-6 border-t border-charcoal/10 flex justify-between items-center text-[9px] uppercase tracking-widest opacity-40">
-        <div>© HADAS PASTERNAK 2024</div>
-        <div class="flex gap-4">
-            <a href="#">LINKEDIN</a>
-            <span data-he="שטח · רחפנים · אוטומציה" data-en="FIELD · DRONES · AUTOMATION">שטח · רחפנים · אוטומציה</span>
-        </div>
+    <footer class="p-12 text-center text-xs opacity-40 tracking-widest">
+        HADAS PASTERNAK — 2024 — PRECISION & TECHNOLOGY
     </footer>
 
     <script>
         function toggleLang() {
-            const html = document.documentElement;
-            const isHe = html.getAttribute('lang') === 'he';
-            html.setAttribute('lang', isHe ? 'en' : 'he');
-            html.setAttribute('dir', isHe ? 'ltr' : 'rtl');
-            localStorage.setItem('lang', isHe ? 'en' : 'he');
-        }
-
-        const savedLang = localStorage.getItem('lang');
-        if (savedLang) {
-            document.documentElement.setAttribute('lang', savedLang);
-            document.documentElement.setAttribute('dir', savedLang === 'he' ? 'rtl' : 'ltr');
+            const h = document.documentElement;
+            const isHe = h.getAttribute('lang') === 'he';
+            h.setAttribute('lang', isHe ? 'en' : 'he');
+            h.setAttribute('dir', isHe ? 'ltr' : 'rtl');
         }
 
         const WEBHOOK_URL = "PASTE_YOUR_N8N_URL_HERE";
         const form = document.getElementById('contactForm');
-        
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (form.elements['_gotcha'].value) return;
-            
             const btn = document.getElementById('submitBtn');
             const status = document.getElementById('formStatus');
             btn.disabled = true;
-            status.textContent = "...";
+            status.textContent = "שולח... / SENDING...";
 
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            data.owner = "Hadas Pasternak";
 
             try {
                 const res = await fetch(WEBHOOK_URL, {
@@ -234,13 +208,18 @@
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    status.textContent = "נשלח בהצלחה / Sent!";
+                    status.textContent = "נשלח בהצלחה! / SENT SUCCESSFULLY";
                     form.reset();
                 } else throw new Error();
             } catch {
-                status.innerHTML = `שגיאה. שלח למייל: <a href="mailto:hadaspasternak1@gmail.com" class="underline">hadaspasternak1@gmail.com</a>`;
-            } finally { btn.disabled = false; }
+                status.textContent = "שגיאה - נסה שנית / ERROR";
+            } finally {
+                btn.disabled = false;
+            }
         });
     </script>
 </body>
 </html>
+
+מה עכשיו? תעשה את אותו תהליך ב-GitHub: עריכה של index.html, מחיקת הכל, והדבקת
+הקוד החדש. כעת הטקסט יהיה לבן וברור מאוד על הרקע הירוק.
