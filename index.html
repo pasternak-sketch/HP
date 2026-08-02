@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        'dark-sage': '#3D4B26', /* ירוק זית עמוק יותר לניגודיות טובה */
+                        'dark-sage': '#3D4B26', /* ירוק זית עמוק לניגודיות טובה */
                         'pure-white': '#FFFFFF',
                     },
                     fontFamily: {
@@ -40,10 +40,11 @@
 
         .hero-title { 
             font-family: 'Rubik', sans-serif; 
-            font-size: clamp(2.5rem, 8vw, 6rem); 
-            line-height: 1.1; 
+            font-size: clamp(2rem, 5vw, 4.2rem); 
+            line-height: 1.15; 
             font-weight: 800;
             color: #FFFFFF;
+            letter-spacing: -0.02em;
         }
 
         .nav-link { 
@@ -82,31 +83,116 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
         }
         
-        [data-en] { display: none; }
-        html[lang="en"] [data-en] { display: block; }
-        html[lang="en"] [data-he] { display: none; }
+        /* ניהול שפות תקין וברור */
+        [data-en] { display: none !important; }
+        [data-he] { display: inline-block; }
+        p[data-he], div[data-he], h1[data-he], h2[data-he], h3[data-he], h4[data-he] { display: block; }
+
+        html[lang="en"] [data-en] { display: inline-block !important; }
+        html[lang="en"] p[data-en], html[lang="en"] div[data-en], html[lang="en"] h1[data-en], html[lang="en"] h2[data-en], html[lang="en"] h3[data-en], html[lang="en"] h4[data-en] { display: block !important; }
+        html[lang="en"] [data-he] { display: none !important; }
+
+        /* בלון הודעה מעוצב, בולט וקריא עם צלליות מקצועיות */
+        .speech-bubble {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 
+                        0 0 30px rgba(255, 255, 255, 0.2),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.6);
+            animation: floatBubble 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .speech-bubble:hover {
+            border-color: #FFFFFF;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.18) 100%);
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.75), 
+                        0 0 45px rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 16px 16px 0 16px;
+            border-style: solid;
+            border-color: rgba(255, 255, 255, 0.45) transparent transparent transparent;
+        }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
     </style>
 </head>
 <body>
 
     <!-- Fixed Navigation -->
     <nav class="fixed top-0 w-full p-5 flex justify-center items-center gap-8 md:gap-16 z-50 bg-[#3D4B26]/95 backdrop-blur-sm">
-        <a href="#about" class="nav-link hover:underline">אודות</a>
-        <a href="#projects" class="nav-link hover:underline">פרויקטים</a>
-        <a href="#contact" class="nav-link hover:underline">צור קשר</a>
-        <button onclick="toggleLang()" class="nav-link border border-white/40 px-3 py-1 rounded text-xs">EN/HE</button>
+        <a href="#about" class="nav-link hover:underline">
+            <span data-he>אודות</span>
+            <span data-en>About</span>
+        </a>
+        <a href="#projects" class="nav-link hover:underline">
+            <span data-he>פרויקטים</span>
+            <span data-en>Projects</span>
+        </a>
+        <a href="#contact" class="nav-link hover:underline">
+            <span data-he>צור קשר</span>
+            <span data-en>Contact</span>
+        </a>
+        <button onclick="toggleLang()" class="nav-link border border-white/40 px-3 py-1 rounded text-xs hover:bg-white/10 transition-colors">
+            <span data-he>EN</span><span data-en>HE</span>
+        </button>
     </nav>
 
     <main>
         <!-- Hero Section -->
-        <section class="min-h-screen flex flex-col justify-center items-center">
-            <div class="centered-content">
-                <h1 class="hero-title mb-6">
-                    <span data-he="בואו נבנה<br>משהו חכם יותר." data-en="Let's build<br>something smarter.">בואו נבנה<br>משהו חכם יותר.</span>
+        <section class="min-h-screen flex flex-col justify-center items-center pt-24 pb-12">
+            <div class="centered-content px-4">
+                <!-- Clickable Speech Bubble (Balloon) -->
+                <a href="#contact" id="speechBubbleLink" class="speech-bubble max-w-lg mx-auto mb-8 p-4 md:p-5 text-center block text-white no-underline group cursor-pointer" title="לחץ מעבר ליצירת קשר">
+                    <div class="flex items-center justify-center gap-2 mb-1.5">
+                        <span class="text-xl">⚡</span>
+                        <span class="font-bold text-base md:text-lg tracking-wide text-white drop-shadow-sm" data-he>בוא נייעל את העבודה שלך!</span>
+                        <span class="font-bold text-base md:text-lg tracking-wide text-white drop-shadow-sm" data-en>Let's optimize your workflow!</span>
+                    </div>
+                    <p class="text-sm md:text-base text-white/95 font-medium leading-relaxed drop-shadow-sm" data-he>
+                        אל תבזבז זמן על עבודה שחורה – הופכים תהליכים סיזיפיים לאוטומציה מדויקת ומהירה.
+                    </p>
+                    <p class="text-sm md:text-base text-white/95 font-medium leading-relaxed drop-shadow-sm" data-en>
+                        Stop wasting time on repetitive manual work — turn tedious tasks into smart, automated precision.
+                    </p>
+                    <div class="mt-2.5 text-xs font-semibold text-white/80 underline tracking-wider" data-he>
+                        לחץ כאן ליצירת קשר 👈
+                    </div>
+                    <div class="mt-2.5 text-xs font-semibold text-white/80 underline tracking-wider" data-en>
+                        Click here to contact 👉
+                    </div>
+                </a>
+
+                <!-- Pure, Prominently Visible Main Hero Headline -->
+                <h1 class="hero-title mb-5 text-white font-extrabold text-center">
+                    <span data-he>בואו נבנה<br>משהו חכם יותר.</span>
+                    <span data-en>Let's build<br>something smarter.</span>
                 </h1>
-                <h2 class="text-3xl md:text-5xl font-bold mb-8" data-he="הדס פסטרנק" data-en="Hadas Pasternak">הדס פסטרנק</h2>
-                <p class="text-xl md:text-2xl font-light opacity-90 max-w-2xl mx-auto leading-relaxed" data-he="צילום רחפן ועריכת תוכן ברמה גבוהה - מטיס רחפנים מיומן ויוצר תוכן מקצועי בהתאמה מלאה לעסק שלך - משלב הצילום ועד לעריכה הסופית. באמצעות טכנולוגיות ואוטמציות מתרדמו, אני מייעל את תהליך העבודה ומאפשר לעסק שלך לקבל תוכן איכותי מהיר ואפקטיבי יותר.." data-en="Technical Operations expert. Bridging acoustics, hydrology, and drone technology to maximize precision and save costs.">
+
+                <!-- Text below headline -->
+                <h2 class="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight" data-he>הדס פסטרנק</h2>
+                <h2 class="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight" data-en>Hadas Pasternak</h2>
+
+                <p class="text-lg md:text-xl font-light text-white/90 max-w-2xl mx-auto leading-relaxed" data-he>
                     מומחה תפעול ושטח בחברה לייעוץ סביבתי. מחבר בין דוחות אקוסטיים, ניתוח הידרולוגי וטכנולוגיית רחפנים כדי למקסם דיוק ולחסוך בעלויות.
+                </p>
+                <p class="text-lg md:text-xl font-light text-white/90 max-w-2xl mx-auto leading-relaxed" data-en>
+                    Technical Operations expert. Bridging acoustics, hydrology, and drone technology to maximize precision and save costs.
                 </p>
             </div>
         </section>
@@ -114,14 +200,16 @@
         <!-- About Section -->
         <section id="about">
             <div class="centered-content">
-                <span class="nav-link opacity-60 mb-12 block">01 — EXPERIENCE</span>
+                <span class="nav-link opacity-60 mb-12 block">
+                    <span data-he>01 — ניסיון</span>
+                    <span data-en>01 — EXPERIENCE</span>
+                </span>
                 <div class="space-y-10 text-2xl md:text-4xl font-bold leading-tight">
-                    <p data-he="אני מנהל את הממשק שבין השטח לתכנון הסטטוטורי. הליווי שלי מתחיל בקניית הקרקע וממשיך עד לטופס 4." data-en="I manage the interface between field operations and statutory planning, from acquisition to occupancy.">
-                        אני מנהל את הממשק שבין השטח לתכנון הסטטוטורי. הליווי שלי מתחיל בקניית הקרקע וממשיך עד לטופס 4.
-                    </p>
-                    <p data-he="בחברה לייעוץ סביבתי בה אני עובד, אני מטמיע אוטומציות כדי להפוך עבודה סיזיפית לתוצאות מדויקות בשטח." data-en="I implement automations to turn tedious tasks into precise field results.">
-                        בחברה לייעוץ סביבתי בה אני עובד, אני מטמיע אוטומציות כדי להפוך עבודה סיזיפית לתוצאות מדויקות בשטח.
-                    </p>
+                    <p data-he>אני מנהל את הממשק שבין השטח לתכנון הסטטוטורי. הליווי שלי מתחיל בקניית הקרקע וממשיך עד לטופס 4.</p>
+                    <p data-en>I manage the interface between field operations and statutory planning, from acquisition to occupancy.</p>
+
+                    <p data-he>בחברה לייעוץ סביבתי בה אני עובד, אני מטמיע אוטומציות כדי להפוך עבודה סיזיפית לתוצאות מדויקות בשטח.</p>
+                    <p data-en>I implement automations to turn tedious tasks into precise field results.</p>
                 </div>
             </div>
         </section>
@@ -129,15 +217,26 @@
         <!-- Projects Section -->
         <section id="projects">
             <div class="centered-content">
-                <span class="nav-link opacity-60 mb-12 block">02 — PROJECTS</span>
+                <span class="nav-link opacity-60 mb-12 block">
+                    <span data-he>02 — פרויקטים</span>
+                    <span data-en>02 — PROJECTS</span>
+                </span>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div class="bg-white/5 p-8 rounded-lg">
-                        <h4 class="font-bold text-2xl mb-4 text-white">אופטימיזציה הידרולוגית</h4>
-                        <p class="opacity-80 text-lg">איתור טעות בחישוב זרימת מים שמנעה עיכובים יקרים וחסכה הוצאות פיתוח משמעותיות ליזם.</p>
+                        <h4 class="font-bold text-2xl mb-4 text-white">
+                            <span data-he>אופטימיזציה הידרולוגית</span>
+                            <span data-en>Hydrological Optimization</span>
+                        </h4>
+                        <p class="opacity-80 text-lg" data-he>איתור טעות בחישוב זרימת מים שמנעה עיכובים יקרים וחסכה הוצאות פיתוח משמעותיות ליזם.</p>
+                        <p class="opacity-80 text-lg" data-en>Identifying water flow calculation errors that prevented costly delays and saved significant development expenses.</p>
                     </div>
                     <div class="bg-white/5 p-8 rounded-lg">
-                        <h4 class="font-bold text-2xl mb-4 text-white">מיפוי רחפנים ו-AI</h4>
-                        <p class="opacity-80 text-lg">שימוש בצילום אווירי לתיעוד סטטוס ביצוע וניתוח אגני ניקוז ברמת דיוק מקסימלית.</p>
+                        <h4 class="font-bold text-2xl mb-4 text-white">
+                            <span data-he>מיפוי רחפנים ו-AI</span>
+                            <span data-en>Drone Mapping & AI</span>
+                        </h4>
+                        <p class="opacity-80 text-lg" data-he>שימוש בצילום אווירי לתיעוד סטטוס ביצוע וניתוח אגני ניקוז ברמת דיוק מקסימלית.</p>
+                        <p class="opacity-80 text-lg" data-en>Utilizing aerial drone photography for execution status documentation and drainage basin analysis with maximum precision.</p>
                     </div>
                 </div>
             </div>
@@ -146,16 +245,23 @@
         <!-- Contact Section -->
         <section id="contact" style="border-bottom: none;">
             <div class="centered-content">
-                <span class="nav-link opacity-60 mb-12 block">03 — CONTACT</span>
-                <h3 class="text-3xl font-bold mb-8">בואו נדבר</h3>
+                <span class="nav-link opacity-60 mb-12 block">
+                    <span data-he>03 — צור קשר</span>
+                    <span data-en>03 — CONTACT</span>
+                </span>
+                <h3 class="text-3xl font-bold mb-8">
+                    <span data-he>בואו נדבר</span>
+                    <span data-en>Let's Talk</span>
+                </h3>
                 <form id="contactForm" class="max-w-lg mx-auto space-y-4">
                     <input type="text" name="_gotcha" class="hidden">
-                    <input type="text" name="name" placeholder="שם מלא" required>
-                    <input type="email" name="email" placeholder="אימייל" required dir="ltr">
-                    <textarea name="message" placeholder="איך אני יכול לעזור?" rows="4" required></textarea>
+                    <input type="text" name="name" id="nameInput" placeholder="שם מלא" required>
+                    <input type="email" name="email" id="emailInput" placeholder="אימייל" required dir="ltr">
+                    <textarea name="message" id="messageInput" placeholder="איך אני יכול לעזור?" rows="4" required></textarea>
                     
                     <button type="submit" id="submitBtn" class="w-full py-5 bg-white text-[#3D4B26] font-bold uppercase tracking-widest text-lg hover:bg-opacity-90 transition-all">
-                        שלח הודעה
+                        <span data-he>שלח הודעה</span>
+                        <span data-en>SEND MESSAGE</span>
                     </button>
                     <p id="formStatus" class="mt-4 font-bold"></p>
                 </form>
@@ -164,41 +270,61 @@
     </main>
 
     <footer class="p-12 text-center text-xs opacity-40 tracking-widest">
-        HADAS PASTERNAK — 2024 — PRECISION & TECHNOLOGY
+        <span data-he>הדס פסטרנק — 2024 — דיוק וטכנולוגיה</span>
+        <span data-en>HADAS PASTERNAK — 2024 — PRECISION & TECHNOLOGY</span>
     </footer>
 
     <script>
         function toggleLang() {
             const h = document.documentElement;
             const isHe = h.getAttribute('lang') === 'he';
-            h.setAttribute('lang', isHe ? 'en' : 'he');
-            h.setAttribute('dir', isHe ? 'ltr' : 'rtl');
+            const nextLang = isHe ? 'en' : 'he';
+            const nextDir = isHe ? 'ltr' : 'rtl';
+
+            h.setAttribute('lang', nextLang);
+            h.setAttribute('dir', nextDir);
+
+            // Update page title
+            document.title = isHe 
+                ? "Hadas Pasternak | Let's build something smarter" 
+                : "הדס פסטרנק | בואו נבנה משהו חכם יותר";
+
+            // Update form placeholders
+            const nameInput = document.getElementById('nameInput');
+            const messageInput = document.getElementById('messageInput');
+            if (nameInput) nameInput.placeholder = isHe ? "Full Name" : "שם מלא";
+            if (messageInput) messageInput.placeholder = isHe ? "How can I help?" : "איך אני יכול לעזור?";
+
+            // Update speech bubble tooltip title
+            const bubble = document.getElementById('speechBubbleLink');
+            if (bubble) bubble.title = isHe ? "Click to jump to contact" : "לחץ מעבר ליצירת קשר";
         }
 
-        const WEBHOOK_URL = "PASTE_YOUR_N8N_URL_HERE";
         const form = document.getElementById('contactForm');
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const status = document.getElementById('formStatus');
+            const isHe = document.documentElement.getAttribute('lang') === 'he';
+            
             btn.disabled = true;
-            status.textContent = "שולח... / SENDING...";
+            status.textContent = isHe ? "שולח..." : "SENDING...";
 
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
             try {
-                const res = await fetch(WEBHOOK_URL, {
+                const res = await fetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    status.textContent = "נשלח בהצלחה! / SENT SUCCESSFULLY";
+                    status.textContent = isHe ? "נשלח בהצלחה!" : "SENT SUCCESSFULLY!";
                     form.reset();
                 } else throw new Error();
             } catch {
-                status.textContent = "שגיאה - נסה שנית / ERROR";
+                status.textContent = isHe ? "שגיאה - נסה שנית" : "ERROR - PLEASE TRY AGAIN";
             } finally {
                 btn.disabled = false;
             }
