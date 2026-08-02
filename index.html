@@ -1,683 +1,90 @@
-!DOCTYPE html>
-<html lang="he" dir="rtl" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הדס פסטרנק | בואו נבנה משהו חכם יותר</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&family=Rubik:wght@400;800&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'dark-sage': '#3D4B26', /* ירוק זית עמוק יותר לניגודיות טובה */
-                        'pure-white': '#FFFFFF',
-                    },
-                    fontFamily: {
-                        sans: ['Assistant', 'sans-serif'],
-                        display: ['Rubik', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* הגדרות בסיס נקיות */
-        body { 
-            background-color: #3D4B26; 
-            color: #FFFFFF; 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Assistant', sans-serif;
-        }
-
-        .hero-title { 
-            font-family: 'Rubik', sans-serif; 
-            font-size: clamp(2rem, 5vw, 4.2rem); 
-            line-height: 1.15; 
-            font-weight: 800;
-            color: #FFFFFF;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-link { 
-            font-family: 'Rubik', sans-serif; 
-            font-size: 0.8rem; 
-            font-weight: 700; 
-            letter-spacing: 0.1em; 
-            color: #FFFFFF;
-            text-decoration: none;
-        }
-
-        .centered-content { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            text-align: center; 
-        }
-        
-        /* עיצוב טופס ברור */
-        input, textarea { 
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid rgba(255, 255, 255, 0.3); 
-            color: #FFFFFF;
-            text-align: center;
-            width: 100%;
-            padding: 1rem;
-            outline: none;
-            font-size: 1.1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-        input:focus, textarea:focus { border-color: #FFFFFF; background: rgba(255, 255, 255, 0.1); }
-        ::placeholder { color: rgba(255, 255, 255, 0.5); }
-
-        section { 
-            padding: 100px 20px; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-        }
-        
-        /* ניהול שפות תקין וברור */
-        [data-en] { display: none !important; }
-        [data-he] { display: inline-block; }
-        p[data-he], div[data-he], h1[data-he], h2[data-he], h3[data-he], h4[data-he] { display: block; }
-
-        html[lang="en"] [data-en] { display: inline-block !important; }
-        html[lang="en"] p[data-en], html[lang="en"] div[data-en], html[lang="en"] h1[data-en], html[lang="en"] h2[data-en], html[lang="en"] h3[data-en], html[lang="en"] h4[data-en] { display: block !important; }
-        html[lang="en"] [data-he] { display: none !important; }
-
-        /* בלון הודעה מעוצב, בולט וקריא עם צלליות מקצועיות */
-        @keyframes propSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes propSpinReverse {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
-        }
-        @keyframes ledPulseRed {
-            0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #FF2E2E); }
-            50% { opacity: 0.3; filter: drop-shadow(0 0 2px #FF2E2E); }
-        }
-        @keyframes ledPulseGreen {
-            0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #00FF66); }
-            50% { opacity: 0.3; filter: drop-shadow(0 0 2px #00FF66); }
-        }
-        @keyframes ledPulseBlue {
-            0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #00E5FF); }
-            50% { opacity: 0.4; filter: drop-shadow(0 0 3px #00E5FF); }
-        }
-        .prop-ccw {
-            animation: propSpin 0.12s linear infinite;
-            transform-origin: center;
-        }
-        .prop-cw {
-            animation: propSpinReverse 0.12s linear infinite;
-            transform-origin: center;
-        }
-        .led-red { animation: ledPulseRed 1.2s ease-in-out infinite; }
-        .led-green { animation: ledPulseGreen 1.2s ease-in-out infinite 0.6s; }
-        .led-blue { animation: ledPulseBlue 1.8s ease-in-out infinite; }
-
-        .drone-wrapper {
-            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.7));
-            transition: filter 0.3s ease, transform 0.2s ease;
-        }
-        .drone-wrapper:hover {
-            filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 20px rgba(0, 229, 255, 0.6));
-            transform: scale(1.12);
-        }
-
-        .speech-bubble {
-            position: relative;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.12) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 
-                        0 0 30px rgba(255, 255, 255, 0.2),
-                        inset 0 1px 2px rgba(255, 255, 255, 0.6);
-            animation: floatBubble 4s ease-in-out infinite;
-            transition: all 0.3s ease;
-        }
-
-        .speech-bubble:hover {
-            border-color: #FFFFFF;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.18) 100%);
-            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.75), 
-                        0 0 45px rgba(255, 255, 255, 0.3);
-            transform: translateY(-4px);
-        }
-
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -16px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 16px 16px 0 16px;
-            border-style: solid;
-            border-color: rgba(255, 255, 255, 0.45) transparent transparent transparent;
-        }
-
-        @keyframes floatBubble {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Fixed Navigation -->
-    <nav class="fixed top-0 w-full p-5 flex justify-center items-center gap-8 md:gap-16 z-50 bg-[#3D4B26]/95 backdrop-blur-sm">
-        <a href="#about" class="nav-link hover:underline">
-            <span data-he>אודות</span>
-            <span data-en>About</span>
-        </a>
-        <a href="#projects" class="nav-link hover:underline">
-            <span data-he>פרויקטים</span>
-            <span data-en>Projects</span>
-        </a>
-        <a href="#contact" class="nav-link hover:underline">
-            <span data-he>צור קשר</span>
-            <span data-en>Contact</span>
-        </a>
-        <button onclick="toggleLang()" class="nav-link border border-white/40 px-3 py-1 rounded text-xs hover:bg-white/10 transition-colors">
-            <span data-he>EN</span><span data-en>HE</span>
-        </button>
-    </nav>
-
-    <main>
-        <!-- Hero Section -->
-        <section class="min-h-screen flex flex-col justify-center items-center pt-24 pb-12">
-            <div class="centered-content px-4">
-                <!-- Clickable Speech Bubble (Balloon) -->
-                <a href="#contact" id="speechBubbleLink" class="speech-bubble max-w-lg mx-auto mb-8 p-4 md:p-5 text-center block text-white no-underline group cursor-pointer" title="לחץ מעבר ליצירת קשר">
-                    <div class="flex items-center justify-center gap-2 mb-1.5">
-                        <span class="text-xl">🛸</span>
-                        <span class="font-bold text-base md:text-lg tracking-wide text-white drop-shadow-sm" data-he>בוא נזניק את שיווק הנכס או העסק שלך!</span>
-                        <span class="font-bold text-base md:text-lg tracking-wide text-white drop-shadow-sm" data-en>Elevate your property or business marketing!</span>
-                    </div>
-                    <p class="text-sm md:text-base text-white/95 font-medium leading-relaxed drop-shadow-sm" data-he>
-                        צילום רחפן היקפי מרהיב בשילוב מיפוי 360° תוך-מבני – הצגת הנכס מהזווית המושלמת שמושכת לקוחות.
-                    </p>
-                    <p class="text-sm md:text-base text-white/95 font-medium leading-relaxed drop-shadow-sm" data-en>
-                        Stunning aerial drone footage & 360° indoor property mapping — showcasing your real estate from every winning angle.
-                    </p>
-                    <div class="mt-2.5 text-xs font-semibold text-white/80 underline tracking-wider group-hover:text-white transition-colors" data-he>
-                        לחץ כאן לייעוץ וצילום הנכס 👈
-                    </div>
-                    <div class="mt-2.5 text-xs font-semibold text-white/80 underline tracking-wider group-hover:text-white transition-colors" data-en>
-                        Click here for a quick consultation 👉
-                    </div>
-                </a>
-
-                <!-- Pure, Prominently Visible Main Hero Headline -->
-                <h1 class="hero-title mb-5 text-white font-extrabold text-center">
-                    <span data-he>בואו נבנה<br>משהו חכם יותר.</span>
-                    <span data-en>Let's build<br>something smarter.</span>
-                </h1>
-
-                <!-- Text below headline -->
-                <h2 class="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight" data-he>הדס פסטרנק</h2>
-                <h2 class="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight" data-en>Hadas Pasternak</h2>
-
-                <p class="text-lg md:text-xl font-light text-white/90 max-w-2xl mx-auto leading-relaxed" data-he>
-                    מטיס רחפנים מקצועי וממפה נכסים לשיווק נדל״ן. מתמחה בשילוב צילומי רחפן חיצוניים ומיפוי פנים עבור נכסי Real Estate ו-Airbnb – חוויה ויזואלית מלאה וקלה לשימוש.
-                </p>
-                <p class="text-lg md:text-xl font-light text-white/90 max-w-2xl mx-auto leading-relaxed" data-en>
-                    Professional drone pilot and real estate property mapping specialist. Combining exterior drone footage with detailed indoor mapping for Real Estate & Airbnb listings — seamless, high-impact visuals made easy.
-                </p>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about">
-            <div class="centered-content">
-                <span class="nav-link opacity-60 mb-12 block">
-                    <span data-he>01 — ניסיון</span>
-                    <span data-en>01 — EXPERIENCE</span>
-                </span>
-                <div class="space-y-10 text-2xl md:text-4xl font-bold leading-tight">
-                    <p data-he>הפקתי וביצעתי עשרות סרטוני שיווק יוקרתיים לבניינים, צילומי אוויר מתקדמים ומיפוי מדויק של בתים ונכסים.</p>
-                    <p data-en>Produced dozens of high-end marketing videos for buildings, advanced aerial photography, and precise indoor property mapping.</p>
-
-                    <p data-he>מתן מענה שלם ומקצועי – החל מתכנון הטיסה והמיפוי ועד לעריכה מושלמת המותאמת לכל הפלטפורמות.</p>
-                    <p data-en>Providing a complete professional solution — from flight planning and mapping to high-impact editing tailored for all platforms.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects">
-            <div class="centered-content">
-                <span class="nav-link opacity-60 mb-12 block">
-                    <span data-he>02 — פרויקטים</span>
-                    <span data-en>02 — PROJECTS</span>
-                </span>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                    <!-- Project 1 -->
-                    <div onclick="openProjectModal('project360')" class="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-white/50 p-8 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-2xl text-right group relative overflow-hidden">
-                        <div class="absolute top-4 left-4 text-xs font-bold bg-white/20 group-hover:bg-white text-white group-hover:text-[#3D4B26] px-3 py-1 rounded-full transition-colors">
-                            <span data-he>צפה בפרויקט 🔍</span>
-                            <span data-en>View Project 🔍</span>
-                        </div>
-                        <div class="text-3xl mb-3">📸 360°</div>
-                        <h4 class="font-bold text-2xl mb-3 text-white">
-                            <span data-he>מיפוי מצלמות 360°</span>
-                            <span data-en>360° Camera Mapping</span>
-                        </h4>
-                        <p class="opacity-90 text-base leading-relaxed mb-4" data-he>סיורים וירטואליים ומיפוי פנים היקפי 360° עבור נכסי נדל״ן, דירות ודירות Airbnb לחוויית קונה מושלמת.</p>
-                        <p class="opacity-90 text-base leading-relaxed mb-4" data-en>360° virtual tours and detailed interior mapping for real estate, apartments, and Airbnb listings for an immersive viewer experience.</p>
-                        <div class="inline-flex items-center gap-2 text-sm font-bold text-white underline group-hover:translate-x-1 transition-transform">
-                            <span data-he>לפרטים מלאים והדגמה 👈</span>
-                            <span data-en>Full details & demo 👉</span>
-                        </div>
-                    </div>
-
-                    <!-- Project 2 -->
-                    <div onclick="openProjectModal('projectPerimeter')" class="bg-white/10 hover:bg-white/15 border border-white/20 hover:border-white/50 p-8 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-2xl text-right group relative overflow-hidden">
-                        <div class="absolute top-4 left-4 text-xs font-bold bg-white/20 group-hover:bg-white text-white group-hover:text-[#3D4B26] px-3 py-1 rounded-full transition-colors">
-                            <span data-he>צפה בפרויקט 🔍</span>
-                            <span data-en>View Project 🔍</span>
-                        </div>
-                        <div class="text-3xl mb-3">🛸 🎥</div>
-                        <h4 class="font-bold text-2xl mb-3 text-white">
-                            <span data-he>צילום היקפי ועריכה לבניינים</span>
-                            <span data-en>Perimeter Videography & Editing</span>
-                        </h4>
-                        <p class="opacity-90 text-base leading-relaxed mb-4" data-he>צילום אווירי והיקפי של מבנים ובניינים בשילוב עריכות וידאו מקצועיות לשיווק חזק בכל הפלטפורמות.</p>
-                        <p class="opacity-90 text-base leading-relaxed mb-4" data-en>Aerial and perimeter building videography combined with high-end editing for maximum marketing reach across all platforms.</p>
-                        <div class="inline-flex items-center gap-2 text-sm font-bold text-white underline group-hover:translate-x-1 transition-transform">
-                            <span data-he>לפרטים מלאים והדגמה 👈</span>
-                            <span data-en>Full details & demo 👉</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dynamic Drone flying on scroll -->
-        <div id="scrollDrone" class="fixed top-24 z-40 pointer-events-none transition-transform duration-75 ease-out flex flex-col items-center" style="left: 5%;">
-            <a href="#contact" title="לחץ מעבר ליצירת קשר" class="pointer-events-auto drone-wrapper group flex flex-col items-center cursor-pointer no-underline">
-                <div class="relative w-16 h-16 md:w-20 md:h-20">
-                    <svg class="w-full h-full text-white" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <!-- Gradients for realistic DJI Metallic & Carbon finish -->
-                            <linearGradient id="djiBody" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#475569"/>
-                                <stop offset="50%" stop-color="#1E293B"/>
-                                <stop offset="100%" stop-color="#0F172A"/>
-                            </linearGradient>
-                            <linearGradient id="djiArm" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#334155"/>
-                                <stop offset="100%" stop-color="#0F172A"/>
-                            </linearGradient>
-                            <linearGradient id="djiLens" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#00F0FF"/>
-                                <stop offset="60%" stop-color="#0284C7"/>
-                                <stop offset="100%" stop-color="#0369A1"/>
-                            </linearGradient>
-                            <linearGradient id="djiGold" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#F59E0B"/>
-                                <stop offset="100%" stop-color="#D97706"/>
-                            </linearGradient>
-                        </defs>
-
-                        <!-- Shadow underneath -->
-                        <ellipse cx="60" cy="108" rx="36" ry="6" fill="rgba(0,0,0,0.35)" filter="blur(3px)" />
-
-                        <!-- Quadcopter Arms -->
-                        <!-- Front Left Arm -->
-                        <path d="M 50 48 L 24 24" stroke="url(#djiArm)" stroke-width="7" stroke-linecap="round" />
-                        <path d="M 50 48 L 24 24" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="2 3" opacity="0.6"/>
-
-                        <!-- Front Right Arm -->
-                        <path d="M 70 48 L 96 24" stroke="url(#djiArm)" stroke-width="7" stroke-linecap="round" />
-                        <path d="M 70 48 L 96 24" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="2 3" opacity="0.6"/>
-
-                        <!-- Rear Left Arm -->
-                        <path d="M 48 68 L 18 94" stroke="url(#djiArm)" stroke-width="7" stroke-linecap="round" />
-                        <path d="M 48 68 L 18 94" stroke="#94A3B8" stroke-width="1.5" opacity="0.4"/>
-
-                        <!-- Rear Right Arm -->
-                        <path d="M 72 68 L 102 94" stroke="url(#djiArm)" stroke-width="7" stroke-linecap="round" />
-                        <path d="M 72 68 L 102 94" stroke="#94A3B8" stroke-width="1.5" opacity="0.4"/>
-
-                        <!-- Motors (Brushless Hubs) -->
-                        <circle cx="24" cy="24" r="7" fill="#334155" stroke="#94A3B8" stroke-width="1.5"/>
-                        <circle cx="24" cy="24" r="3" fill="#CBD5E1"/>
-
-                        <circle cx="96" cy="24" r="7" fill="#334155" stroke="#94A3B8" stroke-width="1.5"/>
-                        <circle cx="96" cy="24" r="3" fill="#CBD5E1"/>
-
-                        <circle cx="18" cy="94" r="7" fill="#334155" stroke="#94A3B8" stroke-width="1.5"/>
-                        <circle cx="18" cy="94" r="3" fill="#CBD5E1"/>
-
-                        <circle cx="102" cy="94" r="7" fill="#334155" stroke="#94A3B8" stroke-width="1.5"/>
-                        <circle cx="102" cy="94" r="3" fill="#CBD5E1"/>
-
-                        <!-- Navigation Lights (Blinking Position LEDs) -->
-                        <circle cx="24" cy="24" r="3" fill="#FF2E2E" class="led-red" />
-                        <circle cx="96" cy="24" r="3" fill="#00FF66" class="led-green" />
-                        <circle cx="18" cy="94" r="2.5" fill="#FF2E2E" class="led-red" />
-                        <circle cx="102" cy="94" r="2.5" fill="#00FF66" class="led-green" />
-
-                        <!-- Spinning Propellers (Carbon fiber blur look) -->
-                        <!-- Front Left Propeller -->
-                        <g style="transform-origin: 24px 24px;" class="prop-ccw">
-                            <ellipse cx="24" cy="24" rx="20" ry="3.5" fill="rgba(255, 255, 255, 0.45)" />
-                            <ellipse cx="24" cy="24" rx="20" ry="1.5" fill="rgba(255, 255, 255, 0.75)" />
-                        </g>
-
-                        <!-- Front Right Propeller -->
-                        <g style="transform-origin: 96px 24px;" class="prop-cw">
-                            <ellipse cx="96" cy="24" rx="20" ry="3.5" fill="rgba(255, 255, 255, 0.45)" />
-                            <ellipse cx="96" cy="24" rx="20" ry="1.5" fill="rgba(255, 255, 255, 0.75)" />
-                        </g>
-
-                        <!-- Rear Left Propeller -->
-                        <g style="transform-origin: 18px 94px;" class="prop-cw">
-                            <ellipse cx="18" cy="94" rx="18" ry="3" fill="rgba(255, 255, 255, 0.4)" />
-                            <ellipse cx="18" cy="94" rx="18" ry="1.2" fill="rgba(255, 255, 255, 0.7)" />
-                        </g>
-
-                        <!-- Rear Right Propeller -->
-                        <g style="transform-origin: 102px 94px;" class="prop-ccw">
-                            <ellipse cx="102" cy="94" rx="18" ry="3" fill="rgba(255, 255, 255, 0.4)" />
-                            <ellipse cx="102" cy="94" rx="18" ry="1.2" fill="rgba(255, 255, 255, 0.7)" />
-                        </g>
-
-                        <!-- Aerodynamic DJI Main Body (Chassis) -->
-                        <path d="M 60 18 C 72 18 76 34 74 72 C 72 84 66 90 60 90 C 54 90 48 84 46 72 C 44 34 48 18 60 18 Z" fill="url(#djiBody)" stroke="#64748B" stroke-width="1.5"/>
-
-                        <!-- Top Shell Accents & Battery Indicators -->
-                        <path d="M 53 45 L 67 45 L 65 75 L 55 75 Z" fill="#1E293B" stroke="#475569" stroke-width="1"/>
-                        <circle cx="60" cy="52" r="1.5" fill="#00FF66" opacity="0.9"/>
-                        <circle cx="60" cy="58" r="1.5" fill="#00FF66" opacity="0.9"/>
-                        <circle cx="60" cy="64" r="1.5" fill="#00FF66" opacity="0.9"/>
-                        <circle cx="60" cy="70" r="1.5" fill="#00FF66" opacity="0.9"/>
-
-                        <!-- DJI Logo Tag -->
-                        <text x="60" y="40" font-family="sans-serif" font-size="5" font-weight="900" fill="#94A3B8" text-anchor="middle" letter-spacing="1">DJI</text>
-
-                        <!-- Rear Status Beacon Light -->
-                        <circle cx="60" cy="85" r="3" fill="#00E5FF" class="led-blue"/>
-
-                        <!-- Gimbal 4K Camera Assembly (Front Nose) -->
-                        <rect x="52" y="14" width="16" height="12" rx="3" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
-                        <!-- Gold Ring -->
-                        <circle cx="60" cy="20" r="5" fill="none" stroke="url(#djiGold)" stroke-width="1"/>
-                        <!-- Hasselblad Lens -->
-                        <circle cx="60" cy="20" r="4" fill="url(#djiLens)"/>
-                        <!-- Lens Glare Reflection -->
-                        <circle cx="58.5" cy="18.5" r="1.2" fill="#FFFFFF" opacity="0.8"/>
-                    </svg>
-                </div>
-
-                <!-- Clickable Badge Label under Drone -->
-                <div class="mt-1 px-3 py-1 bg-black/80 backdrop-blur-md border border-white/40 rounded-full text-xs font-bold text-white shadow-xl opacity-90 group-hover:opacity-100 group-hover:bg-white group-hover:text-[#3D4B26] transition-all flex items-center gap-1.5 whitespace-nowrap">
-                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                    <span data-he>לחץ ליצירת קשר 📩</span>
-                    <span data-en>Click to Contact 📩</span>
-                </div>
-            </a>
-        </div>
-
-        <!-- Project Details Modal View -->
-        <div id="projectModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-            <div class="bg-[#3D4B26] border border-white/30 rounded-3xl max-w-2xl w-full p-6 md:p-10 text-white relative shadow-2xl my-8">
-                <!-- Close Button -->
-                <button onclick="closeProjectModal()" class="absolute top-5 left-5 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center text-xl transition-colors">
-                    ✕
-                </button>
-
-                <!-- Dynamic Modal Contents -->
-                <div id="modalContent360" class="hidden">
-                    <div class="text-4xl mb-3">📸 360°</div>
-                    <h3 class="text-2xl md:text-3xl font-extrabold mb-2" data-he>מיפוי מצלמות 360° וסיורים וירטואליים</h3>
-                    <h3 class="text-2xl md:text-3xl font-extrabold mb-2" data-en>360° Camera Mapping & Virtual Tours</h3>
-
-                    <p class="text-white/90 text-lg leading-relaxed mb-6" data-he>
-                        פתרון תצוגה פנים-מבני מתקדם המעניק ללקוחות פוטנציאליים חוויה של "להיות בתוך הנכס". מתאים במיוחד לנכסי נדל״ן למכירה/השכרה ודירות Airbnb הרוצות להגדיל את אחוזי ההמרה וההזמנות.
-                    </p>
-                    <p class="text-white/90 text-lg leading-relaxed mb-6" data-en>
-                        An advanced interior walkthrough solution giving potential buyers and guests an authentic "inside the property" experience. Perfect for real estate listings and Airbnb rentals looking to boost bookings.
-                    </p>
-
-                    <div class="bg-white/10 p-5 rounded-xl mb-6 space-y-3">
-                        <h4 class="font-bold text-lg text-white mb-2" data-he>מה החבילה כוללת?</h4>
-                        <h4 class="font-bold text-lg text-white mb-2" data-en>What's included in this package?</h4>
-                        
-                        <div class="flex items-start gap-3 text-base">
-                            <span class="text-green-300 font-bold">✓</span>
-                            <span data-he>צילום היקפי 360 מעלות ברזולוציה גבוהה לכל חללי הנכס</span>
-                            <span data-en>High-resolution 360-degree capture of all interior spaces</span>
-                        </div>
-                        <div class="flex items-start gap-3 text-base">
-                            <span class="text-green-300 font-bold">✓</span>
-                            <span data-he>בניית סיור וירטואלי אינטראקטיבי וקל לשיתוף בכל אתר או רשת חברתית</span>
-                            <span data-en>Interactive virtual tour compatible with websites and social media</span>
-                        </div>
-                        <div class="flex items-start gap-3 text-base">
-                            <span class="text-green-300 font-bold">✓</span>
-                            <span data-he>שילוב נקודות עניין (Hotspots) להבלטת אלמנטים יוקרתיים בנכס</span>
-                            <span data-en>Custom Hotspots showcasing unique features and luxury details</span>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-4 justify-end">
-                        <button onclick="closeProjectModal(); location.href='#contact';" class="w-full sm:w-auto px-6 py-3.5 bg-white text-[#3D4B26] font-bold rounded-xl hover:bg-opacity-90 transition-all text-center">
-                            <span data-he>הזמן מיפוי 360° לנכס שלך 👈</span>
-                            <span data-en>Book 360° Mapping for your Property 👉</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="modalContentPerimeter" class="hidden">
-                    <div class="text-4xl mb-3">🛸 🎥</div>
-                    <h3 class="text-2xl md:text-3xl font-extrabold mb-2" data-he>צילום היקפי ועריכת וידאו לבניינים</h3>
-                    <h3 class="text-2xl md:text-3xl font-extrabold mb-2" data-en>Perimeter Drone Videography & Building Editing</h3>
-
-                    <p class="text-white/90 text-lg leading-relaxed mb-6" data-he>
-                        צילומי אוויר ברמת 4K HDR המציגים את המבנה, הסביבה הקרובה, הגישה והנוף מהזווית הגבוהה והמרשימה ביותר. מתאים ליזמים, מתווכים ובעלי נכסים הרוצים סרטון שיווקי ממגנט.
-                    </p>
-                    <p class="text-white/90 text-lg leading-relaxed mb-6" data-en>
-                        High-definition 4K HDR aerial drone video showcasing the building, surrounding environment, views, and architecture from dramatic high-altitude angles.
-                    </p>
-
-                    <div class="bg-white/10 p-5 rounded-xl mb-6 space-y-3">
-                        <h4 class="font-bold text-lg text-white mb-2" data-he>מה החבילה כוללת?</h4>
-                        <h4 class="font-bold text-lg text-white mb-2" data-en>What's included in this package?</h4>
-                        
-                        <div class="flex items-start gap-3 text-base">
-                            <span class="text-green-300 font-bold">✓</span>
-                            <span data-he>טיסה היקפית מקצועית סביב הבניין והטלת זווית ייחודית</span>
-                            <span data-en>Professional perimeter orbit flight showcasing full building facade</span>
-                        </div>
-                        <div class="flex items-start gap-3 text-base">
-                            <span class="text-green-300 font-bold">✓</span>
-                            <span data-he>עריכת וידאו קולנועית כולל מוזיקה מותאמת ועיבוד צבעים (Color Grading)</span>
-                            <span data-en>Cinematic editing including custom soundtrack & color grading</span>
-                        </div>
-                        <div class="flex items-start gap-3 text-base">
-                            <span class="text-green-300 font-bold">✓</span>
-                            <span data-he>יצוא פורמטים מותאמים לרשתות: Reels, TikTok, YouTube ואינסטגרם</span>
-                            <span data-en>Optimized exports for all platforms: Reels, TikTok, YouTube & Instagram</span>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-4 justify-end">
-                        <button onclick="closeProjectModal(); location.href='#contact';" class="w-full sm:w-auto px-6 py-3.5 bg-white text-[#3D4B26] font-bold rounded-xl hover:bg-opacity-90 transition-all text-center">
-                            <span data-he>הזמן צילום רחפן לבניין שלך 👈</span>
-                            <span data-en>Book Drone Shoot for your Building 👉</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contact Section -->
-        <section id="contact" style="border-bottom: none;">
-            <div class="centered-content">
-                <span class="nav-link opacity-60 mb-12 block">
-                    <span data-he>03 — צור קשר</span>
-                    <span data-en>03 — CONTACT</span>
-                </span>
-                <h3 class="text-3xl font-bold mb-8">
-                    <span data-he>בואו נדבר</span>
-                    <span data-en>Let's Talk</span>
-                </h3>
-                <form id="contactForm" class="max-w-lg mx-auto space-y-4">
-                    <input type="text" name="_gotcha" class="hidden">
-                    <input type="text" name="name" id="nameInput" placeholder="שם מלא" required>
-                    <input type="email" name="email" id="emailInput" placeholder="אימייל" required dir="ltr">
-                    <textarea name="message" id="messageInput" placeholder="איך אני יכול לעזור?" rows="4" required></textarea>
-                    
-                    <button type="submit" id="submitBtn" class="w-full py-5 bg-white text-[#3D4B26] font-bold uppercase tracking-widest text-lg hover:bg-opacity-90 transition-all">
-                        <span data-he>שלח הודעה</span>
-                        <span data-en>SEND MESSAGE</span>
-                    </button>
-                    <p id="formStatus" class="mt-4 font-bold"></p>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer class="p-12 text-center text-xs opacity-40 tracking-widest">
-        <span data-he>הדס פסטרנק — 2024 — דיוק וטכנולוגיה</span>
-        <span data-en>HADAS PASTERNAK — 2024 — PRECISION & TECHNOLOGY</span>
-    </footer>
-
-    <script>
-        function toggleLang() {
-            const h = document.documentElement;
-            const isHe = h.getAttribute('lang') === 'he';
-            const nextLang = isHe ? 'en' : 'he';
-            const nextDir = isHe ? 'ltr' : 'rtl';
-
-            h.setAttribute('lang', nextLang);
-            h.setAttribute('dir', nextDir);
-
-            // Update page title
-            document.title = isHe 
-                ? "Hadas Pasternak | Let's build something smarter" 
-                : "הדס פסטרנק | בואו נבנה משהו חכם יותר";
-
-            // Update form placeholders
-            const nameInput = document.getElementById('nameInput');
-            const messageInput = document.getElementById('messageInput');
-            if (nameInput) nameInput.placeholder = isHe ? "Full Name" : "שם מלא";
-            if (messageInput) messageInput.placeholder = isHe ? "How can I help?" : "איך אני יכול לעזור?";
-
-            // Update speech bubble tooltip title
-            const bubble = document.getElementById('speechBubbleLink');
-            if (bubble) bubble.title = isHe ? "Click to jump to contact" : "לחץ מעבר ליצירת קשר";
-        }
-
-        // Project Modals Logic
-        function openProjectModal(type) {
-            const modal = document.getElementById('projectModal');
-            const content360 = document.getElementById('modalContent360');
-            const contentPerimeter = document.getElementById('modalContentPerimeter');
-
-            if (!modal || !content360 || !contentPerimeter) return;
-
-            content360.classList.add('hidden');
-            contentPerimeter.classList.add('hidden');
-
-            if (type === 'project360') {
-                content360.classList.remove('hidden');
-            } else if (type === 'projectPerimeter') {
-                contentPerimeter.classList.remove('hidden');
-            }
-
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeProjectModal() {
-            const modal = document.getElementById('projectModal');
-            if (modal) {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // Close modal on backdrop click or escape key
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeProjectModal();
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('projectModal');
-            if (modal) {
-                modal.addEventListener('click', (e) => {
-                    if (e.target.id === 'projectModal') closeProjectModal();
-                });
-            }
-        });
-
-        // Scroll Drone Animation: Flies back and forth across screen on scroll
-        window.addEventListener('scroll', () => {
-            const drone = document.getElementById('scrollDrone');
-            if (!drone) return;
-
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            if (maxScroll <= 0) return;
-
-            const scrollRatio = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-
-            // Smooth horizontal movement across screen width (5% to 85%)
-            const leftPercentage = 5 + (Math.sin(scrollRatio * Math.PI * 2 - Math.PI / 2) + 1) * 40; 
-            const topOffset = 80 + Math.sin(scrollRatio * Math.PI * 6) * 18; // Soft hover altitude
-
-            drone.style.left = leftPercentage + '%';
-            drone.style.top = topOffset + 'px';
-
-            // Tilt drone based on horizontal flight direction
-            const directionDelta = Math.cos(scrollRatio * Math.PI * 2 - Math.PI / 2);
-            const tilt = directionDelta * 14; 
-            drone.style.transform = `rotate(${tilt}deg)`;
-        });
-
-        const form = document.getElementById('contactForm');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const status = document.getElementById('formStatus');
-            const isHe = document.documentElement.getAttribute('lang') === 'he';
-            
-            btn.disabled = true;
-            status.textContent = isHe ? "שולח..." : "SENDING...";
-
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            try {
-                const res = await fetch('/api/contact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (res.ok) {
-                    status.textContent = isHe ? "נשלח בהצלחה!" : "SENT SUCCESSFULLY!";
-                    form.reset();
-                } else throw new Error();
-            } catch {
-                status.textContent = isHe ? "שגיאה - נסה שנית" : "ERROR - PLEASE TRY AGAIN";
-            } finally {
-                btn.disabled = false;
-            }
-        });
-    </script>
-</body>
-</html>
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
+
+app.post('/api/contact', async (req, res) => {
+  console.log('Received contact submission:', req.body);
+  
+  // כתובת ה-n8n Webhook
+  const DEFAULT_N8N_URL = 'https://pasternak.app.n8n.cloud/webhook/contact';
+  const webhookUrl = process.env.N8N_WEBHOOK_URL || process.env.WEBHOOK_URL || DEFAULT_N8N_URL;
+  const { name, email, message, _gotcha } = req.body;
+
+  // מנגנון הגנה מפני ספאם (Honeypot)
+  if (_gotcha) {
+    console.log('Spam submission detected via honeypot field.');
+    return res.json({ success: true, message: 'Message received' });
+  }
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, error: 'All fields are required' });
+  }
+
+  let webhookSuccess = false;
+  let webhookError = null;
+
+  if (webhookUrl && webhookUrl.trim() !== '') {
+    try {
+      console.log(`Forwarding contact form submission to n8n webhook: ${webhookUrl}`);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 שניות Timeout
+
+      const response = await fetch(webhookUrl.trim(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Hadas-Pasternak-Website/1.0'
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+          submittedAt: new Date().toISOString(),
+          source: 'Hadas Pasternak Website'
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        webhookSuccess = true;
+        console.log(`Successfully delivered to n8n (HTTP ${response.status})`);
+      } else {
+        const errText = await response.text();
+        webhookError = `n8n responded with HTTP ${response.status}: ${errText}`;
+        console.error(webhookError);
+      }
+    } catch (err) {
+      webhookError = err.name === 'AbortError' ? 'n8n webhook request timed out (8s)' : err.message;
+      console.error('Error delivering to n8n webhook:', webhookError);
+    }
+  }
+
+  res.json({
+    success: true,
+    message: 'Form submission processed successfully',
+    webhookConfigured: true,
+    webhookDelivered: webhookSuccess,
+    webhookError: webhookError
+  });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
