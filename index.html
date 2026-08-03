@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הדס פסטרנק - צילום רחפן, הפקות ווידאו ועיבוד תמונות סטילס</title>
+    <title>הדס פסטרנק - צילום רחפן, מיפוי 360° והפקות וידאו</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Heebo', sans-serif;
-            background-color: #121619;
+            background-color: #0D1117;
             color: #F8FAFC;
         }
         .font-serif-custom {
             font-family: 'Playfair Display', serif;
         }
+        
+        /* Language display logic */
         html[lang="he"] [data-en] { display: none !important; }
         html[lang="en"] [data-he] { display: none !important; }
 
+        /* Drone animations */
         @keyframes propSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -51,74 +54,88 @@
             transition: filter 0.3s ease, transform 0.2s ease;
         }
         .drone-wrapper:hover {
-            filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 20px rgba(0, 229, 255, 0.6));
+            filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 20px rgba(16, 185, 129, 0.6));
             transform: scale(1.12);
         }
 
-        .speech-bubble {
-            position: relative;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.12) 100%);
+        /* Modal backdrop blur */
+        .modal-blur {
             backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .speech-bubble:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            border-color: rgba(255, 255, 255, 0.5);
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 0 12px 12px 12px;
-            border-style: solid;
-            border-color: transparent transparent rgba(255, 255, 255, 0.35) transparent;
+        ::-webkit-scrollbar-track {
+            background: #0D1117;
         }
-        .speech-bubble::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 0 10px 10px 10px;
-            border-style: solid;
-            border-color: transparent transparent rgba(255, 255, 255, 0.2) transparent;
-            z-index: 1;
+        ::-webkit-scrollbar-thumb {
+            background: #1F2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10B981;
         }
     </style>
 </head>
-<body class="bg-[#0D1117] text-slate-100 min-h-screen selection:bg-emerald-500 selection:text-white">
+<body class="bg-[#0D1117] text-slate-100 min-h-screen selection:bg-emerald-500 selection:text-white relative">
 
     <!-- Header Navigation -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0D1117]/80 backdrop-blur-md border-b border-slate-800">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0D1117]/85 backdrop-blur-md border-b border-slate-800/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition-transform">
                     HP
                 </div>
                 <div>
-                    <span class="block font-bold text-lg leading-tight tracking-wide group-hover:text-emerald-400 transition-colors">הדס פסטרנק</span>
-                    <span class="block text-xs text-slate-400 font-light">צילום רחפן & וידאו</span>
+                    <span class="block font-bold text-lg leading-tight tracking-wide group-hover:text-emerald-400 transition-colors">
+                        <span data-he>הדס פסטרנק</span>
+                        <span data-en>Hadas Pasternak</span>
+                    </span>
+                    <span class="block text-xs text-emerald-400/90 font-medium tracking-wide">
+                        <span data-he>צילום רחפן ומיפוי 360</span>
+                        <span data-en>Drone Photography & 360° Mapping</span>
+                    </span>
                 </div>
             </a>
 
-            <!-- Nav Links -->
-            <nav class="hidden md:flex items-center gap-8 font-medium text-sm">
-                <a href="#about" class="text-slate-300 hover:text-emerald-400 transition-colors">אודות</a>
-                <a href="#portfolio" class="text-slate-300 hover:text-emerald-400 transition-colors">פורטפוליו</a>
-                <a href="#services" class="text-slate-300 hover:text-emerald-400 transition-colors">שירותים</a>
-                <a href="#contact" class="px-5 py-2.5 rounded-full bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/25">יצירת קשר</a>
+            <!-- Nav Links (Desktop) -->
+            <nav class="hidden md:flex items-center gap-7 font-medium text-sm">
+                <a href="#about" class="text-slate-300 hover:text-emerald-400 transition-colors">
+                    <span data-he>אודות</span>
+                    <span data-en>About</span>
+                </a>
+                <a href="#services" class="text-slate-300 hover:text-emerald-400 transition-colors">
+                    <span data-he>שירותים</span>
+                    <span data-en>Services</span>
+                </a>
+                <a href="#portfolio" class="text-slate-300 hover:text-emerald-400 transition-colors">
+                    <span data-he>גלריית עבודות</span>
+                    <span data-en>Portfolio Gallery</span>
+                </a>
+                <a href="#virtual-tour" class="text-slate-300 hover:text-emerald-400 transition-colors">
+                    <span data-he>סיור 360°</span>
+                    <span data-en>360° Tour</span>
+                </a>
+                <a href="#contact" class="px-5 py-2.5 rounded-full bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/25 flex items-center gap-2">
+                    <i class="fa-regular fa-paper-plane text-xs"></i>
+                    <span data-he>יצירת קשר</span>
+                    <span data-en>Contact Us</span>
+                </a>
             </nav>
 
-            <!-- Language Switcher & Mobile Menu Button -->
+            <!-- Language Switcher & Quick Call -->
             <div class="flex items-center gap-3">
-                <button id="langToggle" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 text-xs font-semibold transition-colors">
-                    <span data-he>EN</span>
-                    <span data-en>עברית</span>
+                <a href="tel:+972500000000" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 text-xs font-semibold transition-colors">
+                    <i class="fa-solid fa-phone text-xs"></i>
+                    <span data-he>חייג עכשיו</span>
+                    <span data-en>Call Now</span>
+                </a>
+                <button id="langToggle" aria-label="Toggle Language" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700/80 text-xs font-semibold text-emerald-400 transition-all flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-globe text-xs"></i>
+                    <span data-he>English (EN)</span>
+                    <span data-en>עברית (HE)</span>
                 </button>
             </div>
         </div>
@@ -126,35 +143,70 @@
 
     <main class="pt-20">
         <!-- Hero Section -->
-        <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 px-4">
-            <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/20 via-transparent to-[#0D1117] pointer-events-none"></div>
+        <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-24 px-4 bg-gradient-to-b from-[#0D1117] via-[#111827] to-[#0D1117]">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(16,185,129,0.12),transparent_70%)] pointer-events-none"></div>
             
-            <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span data-he>צילום אוויר וקרקע מקצועי</span>
-                    <span data-en>Professional Aerial & Ground Photography</span>
+            <div class="relative z-10 max-w-5xl mx-auto text-center space-y-8">
+                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-semibold tracking-wide">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span data-he>צילום רחפן מתקדם & מיפוי 360° תלת-ממדי</span>
+                    <span data-en>Advanced Drone Aerials & 360° 3D Mapping</span>
                 </div>
 
                 <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight">
-                    <span data-he>תפיסת רגעים מרהיבים <br class="hidden sm:inline"/><span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">מהזווית המושלמת</span></span>
-                    <span data-en>Capturing Stunning Moments <br class="hidden sm:inline"/><span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">From The Perfect Angle</span></span>
+                    <span data-he>תפיסת רגעים מרהיבים <br class="hidden sm:inline"/><span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">צילום רחפן ומיפוי 360</span></span>
+                    <span data-en>Capturing Beyond Horizons <br class="hidden sm:inline"/><span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Drone Aerials & 360° Mapping</span></span>
                 </h1>
 
-                <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
-                    <span data-he>שירותי צילום רחפן מתקדמים, הפקות וידאו מקצועיות ועיבוד תמונות סטילס ברמה הגבוהה ביותר.</span>
-                    <span data-en>Advanced drone photography, professional video production, and high-end still image editing.</span>
+                <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
+                    <span data-he>ברוכים הבאים לעולם של דיוק, חדשנות ויוקרה. מומחה לצילומי רחפן ב-4K, סיורים וירטואליים 360° לנדל"ן וארכיטקטורה, הפקת וידאו קולנועי ועיבוד תמונות ברמה הגבוהה ביותר.</span>
+                    <span data-en>Welcome to a realm of precision, innovation, and architectural luxury. Specializing in 4K drone cinematography, 360° virtual mapping for real estate & design, cinematic editing, and ultra-HD stills.</span>
                 </p>
 
+                <!-- Hero Action Buttons -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/30 text-center">
-                        <span data-he>הזמן צילום עכשיו</span>
-                        <span data-en>Book a Shoot</span>
+                    <a href="#portfolio" class="w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-500 text-slate-950 font-extrabold hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/30 text-center flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-photo-film"></i>
+                        <span data-he>לגלריית העבודות</span>
+                        <span data-en>Explore Works Gallery</span>
                     </a>
-                    <a href="#portfolio" class="w-full sm:w-auto px-8 py-4 rounded-full border border-slate-700 bg-slate-800/40 hover:bg-slate-700/40 font-semibold transition-all text-center">
-                        <span data-he>צפה בגלריה</span>
-                        <span data-en>View Portfolio</span>
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-full border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 font-bold transition-all text-center flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span data-he>הזמן צילום / מיפוי</span>
+                        <span data-en>Book Shoot / Tour</span>
                     </a>
+                </div>
+
+                <!-- Live Metrics Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-10 text-center">
+                    <div class="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+                        <div class="text-2xl sm:text-3xl font-black text-emerald-400">180+</div>
+                        <div class="text-xs text-slate-400 mt-1">
+                            <span data-he>פרויקטים שבוצעו</span>
+                            <span data-en>Completed Projects</span>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+                        <div class="text-2xl sm:text-3xl font-black text-emerald-400">360°</div>
+                        <div class="text-xs text-slate-400 mt-1">
+                            <span data-he>מיפוי וסיורים</span>
+                            <span data-en>Virtual Tours</span>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+                        <div class="text-2xl sm:text-3xl font-black text-emerald-400">4K HDR</div>
+                        <div class="text-xs text-slate-400 mt-1">
+                            <span data-he>איכות וידאו ואוויר</span>
+                            <span data-en>Video & Aerial Quality</span>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm">
+                        <div class="text-2xl sm:text-3xl font-black text-emerald-400">100%</div>
+                        <div class="text-xs text-slate-400 mt-1">
+                            <span data-he>רישוי ובטיחות טיסה</span>
+                            <span data-en>Licensed & Certified</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -178,10 +230,6 @@
                                 <stop offset="0%" stop-color="#00F0FF"/>
                                 <stop offset="60%" stop-color="#0284C7"/>
                                 <stop offset="100%" stop-color="#0369A1"/>
-                            </linearGradient>
-                            <linearGradient id="djiGold" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#F59E0B"/>
-                                <stop offset="100%" stop-color="#D97706"/>
                             </linearGradient>
                         </defs>
 
@@ -223,70 +271,695 @@
                         <circle cx="60" cy="20" r="4" fill="url(#djiLens)"/>
                     </svg>
                 </div>
-                <div class="mt-1 px-3 py-1 bg-black/80 backdrop-blur-md border border-white/40 rounded-full text-xs font-bold text-white shadow-xl opacity-90 group-hover:opacity-100 group-hover:bg-white group-hover:text-[#3D4B26] transition-all flex items-center gap-1.5 whitespace-nowrap">
-                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <div class="mt-1 px-3 py-1 bg-black/90 backdrop-blur-md border border-emerald-500/40 rounded-full text-xs font-bold text-emerald-400 shadow-xl opacity-90 group-hover:opacity-100 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span data-he>לחץ ליצירת קשר 📩</span>
                     <span data-en>Click to Contact 📩</span>
                 </div>
             </a>
         </div>
 
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 px-4 bg-slate-900/50 relative">
-            <div class="max-w-3xl mx-auto bg-slate-800/60 border border-slate-700/60 rounded-3xl p-8 sm:p-12 backdrop-blur-xl shadow-2xl">
-                <div class="text-center space-y-4 mb-8">
-                    <h2 class="text-3xl font-bold">
-                        <span data-he>דברו איתי</span>
-                        <span data-en>Contact Me</span>
+        <!-- Services Section -->
+        <section id="services" class="py-20 px-4 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                    <span data-he>מה אנו מציעים</span>
+                    <span data-en>Our Expertise</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold">
+                    <span data-he>שירותי צילום, וידאו ומיפוי מתקדמים</span>
+                    <span data-en>Specialized Services & Technology</span>
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                    <span data-he>פתרון היקפי מקצועי מקצה לקצה לנדל"ן, אדריכלות, יזמים ופרויקטים מסחריים</span>
+                    <span data-en>End-to-end aerial and 360° virtual solutions for real estate, architecture, and commercial developments</span>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="p-8 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-1.5 group">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-helicopter"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-emerald-400 transition-colors">
+                        <span data-he>צילום רחפן 4K</span>
+                        <span data-en>4K Drone Aerials</span>
+                    </h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        <span data-he>צילומי אוויר סטילס ווידאו ברזולוציית 4K מרהיבה, עם ציוד DJI Cine מקצועי לזווית המושלמת של הפרויקט.</span>
+                        <span data-en>Breathtaking 4K aerial photography & video using top-tier DJI Cine equipment for breathtaking angles.</span>
+                    </p>
+                    <a href="#portfolio" onclick="filterCategory('drone')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5">
+                        <span data-he>צפה בעבודות רחפן ←</span>
+                        <span data-en>View Drone Works →</span>
+                    </a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="p-8 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-1.5 group">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-vr-cardboard"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-emerald-400 transition-colors">
+                        <span data-he>מיפוי וסיורים 360°</span>
+                        <span data-en>360° Virtual Mapping</span>
+                    </h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        <span data-he>סיורים וירטואליים אינטראקטיביים בתלת-ממד עבור נכסי יוקרה, פנטהאוזים, משרדים ומתחמי מסחר.</span>
+                        <span data-en>Interactive 3D virtual walkthroughs & precision space mapping for luxury real estate & commercial hubs.</span>
+                    </p>
+                    <a href="#virtual-tour" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5">
+                        <span data-he>נסה הדגמה חיים 360° ←</span>
+                        <span data-en>Try Live 360 Demo →</span>
+                    </a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="p-8 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-1.5 group">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-clapperboard"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-emerald-400 transition-colors">
+                        <span data-he>הפקת וידאו ועריכה</span>
+                        <span data-en>Video Production & Edit</span>
+                    </h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        <span data-he>עריכת קליפים דינמיים, סרטוני תדמית, שילוב מוזיקה מותאמת אישית ואפקטים קולנועיים.</span>
+                        <span data-en>Dynamic video editing, promotional real estate reels, custom sound design, and color grading.</span>
+                    </p>
+                    <a href="#portfolio" onclick="filterCategory('video')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5">
+                        <span data-he>צפה בסרטוני תדמית ←</span>
+                        <span data-en>View Video Promo →</span>
+                    </a>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="p-8 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-1.5 group">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-emerald-400 transition-colors">
+                        <span data-he>תמונות סטילס HDR</span>
+                        <span data-en>HDR Stills Photography</span>
+                    </h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        <span data-he>צילומי אדריכלות ופנים ברמת גימור מגזינית, עיבוד תאורה, הסרת פגמים והדגשת פרטים.</span>
+                        <span data-en>Magazine-grade interior and architectural stills with advanced HDR exposure bracketed editing.</span>
+                    </p>
+                    <a href="#portfolio" onclick="filterCategory('stills')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5">
+                        <span data-he>צפה בגלריית סטילס ←</span>
+                        <span data-en>View Stills Gallery →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Works Gallery / Portfolio Section -->
+        <section id="portfolio" class="py-20 px-4 bg-slate-900/40 relative border-t border-slate-800/80">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center space-y-4 mb-12">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                        <span data-he>תיק עבודות נבחר</span>
+                        <span data-en>Featured Works Gallery</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold">
+                        <span data-he>גלריית עבודות ופרויקטים</span>
+                        <span data-en>Portfolio & Showcased Projects</span>
                     </h2>
-                    <p class="text-slate-400">
-                        <span data-he>השאירו פרטים ואחזור אליכם בהקדם לתכנון הפרויקט הבא שלכם</span>
-                        <span data-en>Leave a message and I'll get back to you shortly</span>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                        <span data-he>מבחר פרויקטים מובילים בצילום רחפן, מיפוי 360°, הפקות וידאו וצילום ארכיטקטוני</span>
+                        <span data-en>Explore our handpicked portfolio of 4K drone captures, 360° virtual tours, and architecture visualizers</span>
                     </p>
                 </div>
 
-                <form id="contactForm" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
-                            <span data-he>שם מלא</span>
-                            <span data-en>Full Name</span>
-                        </label>
-                        <input type="text" name="name" required class="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
-                            <span data-he>אימייל</span>
-                            <span data-en>Email Address</span>
-                        </label>
-                        <input type="email" name="email" required class="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
-                            <span data-he>הודעה</span>
-                            <span data-en>Message</span>
-                        </label>
-                        <textarea name="message" rows="4" required class="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all"></textarea>
-                    </div>
-
-                    <button type="submit" id="submitBtn" class="w-full py-4 bg-emerald-500 text-slate-950 font-bold rounded-xl hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/25">
-                        <span data-he>שלח הודעה</span>
-                        <span data-en>Send Message</span>
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
+                    <button onclick="filterCategory('all')" id="btn-cat-all" class="cat-btn active px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold border transition-all bg-emerald-500 border-emerald-500 text-slate-950 shadow-md">
+                        <span data-he>הכל</span>
+                        <span data-en>All Works</span>
                     </button>
+                    <button onclick="filterCategory('drone')" id="btn-cat-drone" class="cat-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 transition-all">
+                        <i class="fa-solid fa-drone text-emerald-400 me-1.5"></i>
+                        <span data-he>צילום רחפן 4K</span>
+                        <span data-en>4K Drone</span>
+                    </button>
+                    <button onclick="filterCategory('mapping')" id="btn-cat-mapping" class="cat-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 transition-all">
+                        <i class="fa-solid fa-360-degrees text-emerald-400 me-1.5"></i>
+                        <span data-he>מיפוי 360°</span>
+                        <span data-en>360° Mapping</span>
+                    </button>
+                    <button onclick="filterCategory('video')" id="btn-cat-video" class="cat-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 transition-all">
+                        <i class="fa-solid fa-play text-emerald-400 me-1.5"></i>
+                        <span data-he>הפקות וידאו</span>
+                        <span data-en>Video Reels</span>
+                    </button>
+                    <button onclick="filterCategory('stills')" id="btn-cat-stills" class="cat-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 transition-all">
+                        <i class="fa-solid fa-image text-emerald-400 me-1.5"></i>
+                        <span data-he>תמונות סטילס HDR</span>
+                        <span data-en>HDR Stills</span>
+                    </button>
+                </div>
 
-                    <div id="formStatus" class="text-center text-sm font-medium"></div>
-                </form>
+                <!-- Projects Grid -->
+                <div id="projectsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project Item 1 -->
+                    <div class="project-card group rounded-3xl bg-slate-900/80 border border-slate-800 overflow-hidden hover:border-emerald-500/50 transition-all duration-300 shadow-xl" data-cat="drone">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1000&q=80" alt="Tower Drone" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500 text-slate-950 font-bold text-xs shadow-md">
+                                <span data-he>צילום רחפן 4K</span>
+                                <span data-en>4K Drone</span>
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold group-hover:text-emerald-400 transition-colors">
+                                <span data-he>מגדל היוקרה - תל אביב</span>
+                                <span data-en>Luxury Tower - Tel Aviv</span>
+                            </h3>
+                            <p class="text-slate-400 text-sm line-clamp-2">
+                                <span data-he>צילום רחפן קולנועי בגובה 120 מטר להדגשת קו האופק והים של תל אביב עבור חברת נדל"ן מובילה.</span>
+                                <span data-en>Cinematic 4K aerial photography capturing Tel Aviv skyline and sea view for premier developers.</span>
+                            </p>
+                            <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
+                                <span class="text-xs text-slate-500">DJI Mavic 3 Cine</span>
+                                <button onclick="openModal(1)" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-expand text-xs"></i>
+                                    <span data-he>פרטי הפרויקט</span>
+                                    <span data-en>View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Item 2 -->
+                    <div class="project-card group rounded-3xl bg-slate-900/80 border border-slate-800 overflow-hidden hover:border-emerald-500/50 transition-all duration-300 shadow-xl" data-cat="mapping">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80" alt="Penthouse 360" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-cyan-500 text-slate-950 font-bold text-xs shadow-md">
+                                <span data-he>מיפוי 360°</span>
+                                <span data-en>360° Virtual Tour</span>
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold group-hover:text-emerald-400 transition-colors">
+                                <span data-he>פנטהאוז 360° - הרצליה פיתוח</span>
+                                <span data-en>360° Penthouse - Herzliya Pituach</span>
+                            </h3>
+                            <p class="text-slate-400 text-sm line-clamp-2">
+                                <span data-he>מיפוי פנים תלת-ממדי מלא של פנטהאוז 350 מ"ר כולל נקודות עניין אינטראקטיביות ומעבר בין חדרים.</span>
+                                <span data-en>Full 3D interior mapping of 350 sqm penthouse with interactive hotspot navigation.</span>
+                            </p>
+                            <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
+                                <span class="text-xs text-slate-500">Pro 3D Scanner</span>
+                                <button onclick="openModal(2)" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-expand text-xs"></i>
+                                    <span data-he>פרטי הפרויקט</span>
+                                    <span data-en>View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Item 3 -->
+                    <div class="project-card group rounded-3xl bg-slate-900/80 border border-slate-800 overflow-hidden hover:border-emerald-500/50 transition-all duration-300 shadow-xl" data-cat="video">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80" alt="Luxury Villa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-teal-400 text-slate-950 font-bold text-xs shadow-md">
+                                <span data-he>הפקת וידאו</span>
+                                <span data-en>Video Reel</span>
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold group-hover:text-emerald-400 transition-colors">
+                                <span data-he>סרטון תדמית וילה ארכיטקטונית</span>
+                                <span data-en>Architectural Villa Promo Film</span>
+                            </h3>
+                            <p class="text-slate-400 text-sm line-clamp-2">
+                                <span data-he>שילוב קולנועי של צילומי רחפן FPV מהירים וצילומי קרקע מיוצבים עם סאונד מותאם אישית.</span>
+                                <span data-en>Cinematic combination of FPV drone walkthroughs and stabilized ground camera motion.</span>
+                            </p>
+                            <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
+                                <span class="text-xs text-slate-500">4K 60fps Cinema</span>
+                                <button onclick="openModal(3)" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-expand text-xs"></i>
+                                    <span data-he>פרטי הפרויקט</span>
+                                    <span data-en>View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Item 4 -->
+                    <div class="project-card group rounded-3xl bg-slate-900/80 border border-slate-800 overflow-hidden hover:border-emerald-500/50 transition-all duration-300 shadow-xl" data-cat="stills">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=80" alt="Architectural Interior" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-indigo-500 text-white font-bold text-xs shadow-md">
+                                <span data-he>תמונות סטילס HDR</span>
+                                <span data-en>HDR Stills</span>
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold group-hover:text-emerald-400 transition-colors">
+                                <span data-he>עיצוב פנים - אחוזת בסביון</span>
+                                <span data-en>Interior Design - Savyon Estate</span>
+                            </h3>
+                            <p class="text-slate-400 text-sm line-clamp-2">
+                                <span data-he>סדרת תמונות סטילס HDR באור טבעי ועיבוד דיגיטלי מתקדם להדגשת חומרי גלם ופרטי אדריכלות.</span>
+                                <span data-en>HDR stills gallery featuring natural lighting bracketed techniques for custom architectural elements.</span>
+                            </p>
+                            <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
+                                <span class="text-xs text-slate-500">Sony Alpha HDR</span>
+                                <button onclick="openModal(4)" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-expand text-xs"></i>
+                                    <span data-he>פרטי הפרויקט</span>
+                                    <span data-en>View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Item 5 -->
+                    <div class="project-card group rounded-3xl bg-slate-900/80 border border-slate-800 overflow-hidden hover:border-emerald-500/50 transition-all duration-300 shadow-xl" data-cat="mapping">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1000&q=80" alt="Construction Site Mapping" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-cyan-500 text-slate-950 font-bold text-xs shadow-md">
+                                <span data-he>מיפוי 360°</span>
+                                <span data-en>360° Site Mapping</span>
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold group-hover:text-emerald-400 transition-colors">
+                                <span data-he>מיפוי אתר בנייה ופיתוח</span>
+                                <span data-en>Construction Site Progress Tour</span>
+                            </h3>
+                            <p class="text-slate-400 text-sm line-clamp-2">
+                                <span data-he>תיעוד 360° תקופתי של התקדמות בנייה עבור יזמים ומנהלי פרויקטים למעקב מדויק.</span>
+                                <span data-en>Periodic 360° site progression mapping for engineering management and developer tracking.</span>
+                            </p>
+                            <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
+                                <span class="text-xs text-slate-500">3D Point Cloud</span>
+                                <button onclick="openModal(5)" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-expand text-xs"></i>
+                                    <span data-he>פרטי הפרויקט</span>
+                                    <span data-en>View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Item 6 -->
+                    <div class="project-card group rounded-3xl bg-slate-900/80 border border-slate-800 overflow-hidden hover:border-emerald-500/50 transition-all duration-300 shadow-xl" data-cat="drone">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=80" alt="Commercial Complex" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500 text-slate-950 font-bold text-xs shadow-md">
+                                <span data-he>צילום רחפן 4K</span>
+                                <span data-en>4K Commercial Drone</span>
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold group-hover:text-emerald-400 transition-colors">
+                                <span data-he>מתחם מסחרי - פארק המדע</span>
+                                <span data-en>Commercial Hub - Tech Park</span>
+                            </h3>
+                            <p class="text-slate-400 text-sm line-clamp-2">
+                                <span data-he>צילום אוויר רחב היקף של מתחם משרדים בהקיף 360 מעלות בשעות השקיעה המוזהבות.</span>
+                                <span data-en>Wide aerial angle capturing high-tech office hub during sunset golden hours.</span>
+                            </p>
+                            <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
+                                <span class="text-xs text-slate-500">Golden Hour Aerial</span>
+                                <button onclick="openModal(6)" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5">
+                                    <i class="fa-solid fa-expand text-xs"></i>
+                                    <span data-he>פרטי הפרויקט</span>
+                                    <span data-en>View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive 360° Virtual Tour Playground Widget -->
+        <section id="virtual-tour" class="py-20 px-4 max-w-7xl mx-auto">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700/80 rounded-3xl p-6 sm:p-12 relative overflow-hidden shadow-2xl">
+                <div class="max-w-3xl space-y-4 mb-8">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-360-degrees"></i>
+                        <span data-he>הדגמה אינטראקטיבית לסיור 360°</span>
+                        <span data-en>Interactive 360° Tour Live Preview</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-white">
+                        <span data-he>התנסו בחוויית מיפוי 360° בזמן אמת</span>
+                        <span data-en>Experience Live 360° Interactive Mapping</span>
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base">
+                        <span data-he>גררו את התמונה שמאלה וימינה כדי לחוות סיור וירטואלי מלא בתוך פנטהאוז יוקרתי. ככה הלקוחות שלכם יראו את הנכס.</span>
+                        <span data-en>Drag left or right to explore a 360° virtual tour inside a luxury penthouse estate.</span>
+                    </p>
+                </div>
+
+                <!-- 360 Interactive Viewer Container -->
+                <div class="relative w-full h-80 sm:h-[420px] rounded-2xl overflow-hidden border border-slate-700/60 shadow-2xl group cursor-grab active:cursor-grabbing select-none" id="tourViewer">
+                    <img id="tourImage" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80" alt="360 Tour Interactive" class="w-[180%] max-w-none h-full object-cover transition-transform duration-75" style="transform: translateX(0px);">
+                    
+                    <!-- Overlay Hints & Controls -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none flex flex-col justify-between p-6">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1.5 rounded-lg bg-black/60 backdrop-blur-md border border-white/20 text-xs font-bold text-cyan-300 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                                <span data-he>מצב סיור פעיל 360°</span>
+                                <span data-en>360° Tour Active</span>
+                            </span>
+                            <span class="text-xs text-slate-300 bg-black/50 px-3 py-1 rounded-full border border-white/10">
+                                <i class="fa-solid fa-arrows-left-right me-1"></i>
+                                <span data-he>גרור לסריקה</span>
+                                <span data-en>Drag to Rotate</span>
+                            </span>
+                        </div>
+
+                        <!-- Hotspots in 360 view -->
+                        <div class="flex items-center justify-center gap-4 pointer-events-auto">
+                            <button onclick="panTour(-150)" class="px-4 py-2 rounded-full bg-slate-900/80 hover:bg-emerald-500 hover:text-slate-950 border border-slate-700 text-xs font-bold transition-all shadow-lg">
+                                <i class="fa-solid fa-chevron-right me-1"></i>
+                                <span data-he>סובב ימינה</span>
+                                <span data-en>Rotate Right</span>
+                            </button>
+                            <button onclick="panTour(150)" class="px-4 py-2 rounded-full bg-slate-900/80 hover:bg-emerald-500 hover:text-slate-950 border border-slate-700 text-xs font-bold transition-all shadow-lg">
+                                <span data-he>סובב שמאלה</span>
+                                <span data-en>Rotate Left</span>
+                                <i class="fa-solid fa-chevron-left ms-1"></i>
+                            </button>
+                            <a href="#contact" class="px-5 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition-all shadow-lg">
+                                <span data-he>הזמן סיור לנכס שלך</span>
+                                <span data-en>Book Tour For Your Property</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 px-4 max-w-7xl mx-auto border-t border-slate-800">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                        <span data-he>אודות הדס פסטרנק</span>
+                        <span data-en>About Hadas Pasternak</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight">
+                        <span data-he>מקצועיות ללא פשרות באוויר ובקרקע</span>
+                        <span data-en>Uncompromising Excellence in Air & Ground</span>
+                    </h2>
+                    <p class="text-slate-300 leading-relaxed font-light text-base sm:text-lg">
+                        <span data-he>נעים להכיר, שמי הדס פסטרנק. מומחה מוסמך לצילום רחפן, מיפוי 360° והפקות וידאו לעולמות הנדל"ן, האדריכלות והתשתיות. עם שנים של ניסיון בהטסת רחפנים מתקדמים וציוד צילום קולנועי, אני מעניק לכל נכס ופרויקט את הבמה היוקרתית והמרשימה ביותר.</span>
+                        <span data-en>Hello, I'm Hadas Pasternak. A certified drone operator and specialist in 360° virtual mapping and video production for real estate, architecture, and construction. Armed with years of flight experience and cinema-grade gear, I give every property its most impressive showcase.</span>
+                    </p>
+                    
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-center gap-3 text-slate-200 text-sm font-medium">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+                            <span data-he>רישיון מטיס רחפן בתוקף ואישורי טיסה מאושרים</span>
+                            <span data-en>Certified Drone Operator & Aviation Clearances</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-slate-200 text-sm font-medium">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+                            <span data-he>רזולוציית צילום 4K Ultra HD וסריקות 360° תלת-ממדיות</span>
+                            <span data-en>4K Ultra HD resolution & 360° 3D laser mapping</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-slate-200 text-sm font-medium">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+                            <span data-he>עריכה קולנועית, עיבוד HDR והתאמה לרשתות חברתיות</span>
+                            <span data-en>Cinematic editing, HDR retouching & social media formatting</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <a href="#contact" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-emerald-500 text-slate-950 font-extrabold hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/20">
+                            <span data-he>צור קשר לפרויקט שלך</span>
+                            <span data-en>Get in Touch for Your Project</span>
+                            <i class="fa-solid fa-arrow-left text-xs ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="relative rounded-3xl overflow-hidden border border-slate-700/80 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1000&q=80" alt="Drone Operator Hadas" class="w-full h-auto object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-black/70 backdrop-blur-md border border-white/20 text-white">
+                            <div class="text-xs font-bold text-emerald-400 mb-1">
+                                <span data-he>ציוד קולנועי מתקדם</span>
+                                <span data-en>Advanced Cinema Equipment</span>
+                            </div>
+                            <div class="text-sm font-semibold">
+                                <span data-he>DJI Mavic 3 Cine • Matterport 360 Pro • Sony Alpha Mirrorless</span>
+                                <span data-en>DJI Mavic 3 Cine • Matterport 360 Pro • Sony Alpha Mirrorless</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 px-4 bg-slate-900/60 relative border-t border-slate-800">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Info Column -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                        <span data-he>יצירת קשר</span>
+                        <span data-en>Get in Touch</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold">
+                        <span data-he>מתכננים פרויקט חדש? בואו נדבר</span>
+                        <span data-en>Planning a Project? Let's Connect</span>
+                    </h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        <span data-he>השאירו פרטים או פנו ישירות לקבלת הצעת מחיר מותאמת אישית לצילומי רחפן, מיפוי 360° או הפקת וידאו.</span>
+                        <span data-en>Leave your details or reach out directly for a custom quote on drone aerials, 360° tours, or video production.</span>
+                    </p>
+
+                    <div class="space-y-4 pt-4">
+                        <a href="tel:+972500000000" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60 hover:border-emerald-500/50 transition-all group">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-slate-400">
+                                    <span data-he>טלפון / שיחה ישירה</span>
+                                    <span data-en>Direct Call / Phone</span>
+                                </span>
+                                <span class="font-bold text-slate-200 dir-ltr group-hover:text-emerald-400 transition-colors">+972 50-000-0000</span>
+                            </div>
+                        </a>
+
+                        <a href="https://wa.me/972500000000?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%97%D7%93%D7%A1%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%A8%D7%97%D7%A4%D7%9F%20%2F%20%D7%9E%D7%99%D7%A4%D7%95%D7%99%20360" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 hover:border-emerald-400 transition-all group">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-emerald-400 font-bold">
+                                    <span data-he>ווטסאפ מהיר (WhatsApp)</span>
+                                    <span data-en>Instant WhatsApp Chat</span>
+                                </span>
+                                <span class="font-semibold text-slate-200">
+                                    <span data-he>לחץ לצ'אט ישיר בוואטסאפ</span>
+                                    <span data-en>Click to message on WhatsApp</span>
+                                </span>
+                            </div>
+                        </a>
+
+                        <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-slate-400">
+                                    <span data-he>אזור פעילות</span>
+                                    <span data-en>Service Region</span>
+                                </span>
+                                <span class="font-bold text-slate-200">
+                                    <span data-he>תל אביב, המרכז וכל חלקי הארץ</span>
+                                    <span data-en>Tel Aviv, Central & Nationwide</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Column -->
+                <div class="lg:col-span-7 bg-slate-800/70 border border-slate-700/80 rounded-3xl p-6 sm:p-10 backdrop-blur-xl shadow-2xl">
+                    <form id="contactForm" class="space-y-6">
+                        <input type="text" name="_gotcha" style="display:none !important;" tabindex="-1" autocomplete="off">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">
+                                    <span data-he>שם מלא *</span>
+                                    <span data-en>Full Name *</span>
+                                </label>
+                                <input type="text" name="name" required placeholder="ישראל ישראלי" class="w-full px-4 py-3.5 bg-slate-900/90 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all text-sm text-white placeholder-slate-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">
+                                    <span data-he>אימייל *</span>
+                                    <span data-en>Email Address *</span>
+                                </label>
+                                <input type="email" name="email" required placeholder="your@email.com" class="w-full px-4 py-3.5 bg-slate-900/90 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all text-sm text-white placeholder-slate-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">
+                                <span data-he>סוג השירות המבוקש</span>
+                                <span data-en>Requested Service Type</span>
+                            </label>
+                            <select name="service_type" id="serviceSelect" class="w-full px-4 py-3.5 bg-slate-900/90 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all text-sm text-white">
+                                <option value="צילום רחפן 4K">צילום רחפן 4K / 4K Drone Aerials</option>
+                                <option value="מיפוי וסיורים 360°">מיפוי וסיור וירטואלי 360° / 360° Mapping</option>
+                                <option value="הפקת וידאו קולנועי">הפקת וידאו קולנועי / Video Production</option>
+                                <option value="תמונות סטילס HDR">תמונות סטילס HDR / Architectural Stills</option>
+                                <option value="חבילה משולבת">חבילה משולבת / Combined Package</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">
+                                <span data-he>פרטי הפרויקט / הודעה *</span>
+                                <span data-en>Project Details / Message *</span>
+                            </label>
+                            <textarea name="message" id="messageBox" rows="4" required placeholder="ספר בקצרה על הנכס, המיקום והתאריך המתוכנן..." class="w-full px-4 py-3.5 bg-slate-900/90 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all text-sm text-white placeholder-slate-500"></textarea>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full py-4 bg-emerald-500 text-slate-950 font-black rounded-xl hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-2 text-base">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span data-he>שלח הודעה עכשיו</span>
+                            <span data-en>Send Message Now</span>
+                        </button>
+
+                        <div id="formStatus" class="text-center text-sm font-medium"></div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="py-8 border-t border-slate-800 text-center text-slate-500 text-sm">
-        <p>© 2026 הדס פסטרנק. כל הזכויות שמורות.</p>
+    <!-- Floating WhatsApp Action Button -->
+    <a href="https://wa.me/972500000000?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%97%D7%93%D7%A1%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%A8%D7%97%D7%A4%D7%9F%20%2F%20%D7%9E%D7%99%D7%A4%D7%95%D7%99%20360" target="_blank" rel="noopener" aria-label="WhatsApp Contact" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center text-2xl shadow-2xl hover:scale-110 hover:bg-emerald-400 transition-all group border border-emerald-300/40">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="absolute right-16 top-2.5 px-3 py-1 rounded-lg bg-slate-900 border border-slate-700 text-emerald-400 text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl">
+            <span data-he>צ'אט מהיר בוואטסאפ</span>
+            <span data-en>Chat on WhatsApp</span>
+        </span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-800 text-center text-slate-400 text-sm bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 space-y-6">
+            <div class="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold">
+                <a href="#about" class="hover:text-emerald-400 transition-colors">
+                    <span data-he>אודות</span>
+                    <span data-en>About</span>
+                </a>
+                <a href="#services" class="hover:text-emerald-400 transition-colors">
+                    <span data-he>שירותים</span>
+                    <span data-en>Services</span>
+                </a>
+                <a href="#portfolio" class="hover:text-emerald-400 transition-colors">
+                    <span data-he>גלריית עבודות</span>
+                    <span data-en>Works Portfolio</span>
+                </a>
+                <a href="#virtual-tour" class="hover:text-emerald-400 transition-colors">
+                    <span data-he>מיפוי 360°</span>
+                    <span data-en>360° Tour</span>
+                </a>
+                <a href="#contact" class="hover:text-emerald-400 transition-colors">
+                    <span data-he>יצירת קשר</span>
+                    <span data-en>Contact</span>
+                </a>
+            </div>
+
+            <p>© 2026 הדס פסטרנק - צילום רחפן ומיפוי 360. כל הזכויות שמורות.</p>
+        </div>
     </footer>
 
+    <!-- Project Lightbox Modal -->
+    <div id="projectModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 modal-blur">
+        <div class="relative w-full max-w-4xl bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                <div>
+                    <span id="modalCategory" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold"></span>
+                    <h3 id="modalTitle" class="text-2xl font-bold mt-2 text-white"></h3>
+                </div>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div class="p-6 overflow-y-auto space-y-6">
+                <div class="rounded-2xl overflow-hidden border border-slate-800 max-h-[400px]">
+                    <img id="modalImage" src="" alt="Project Preview" class="w-full h-full object-cover">
+                </div>
+
+                <div class="space-y-4">
+                    <p id="modalDescription" class="text-slate-300 text-sm sm:text-base leading-relaxed"></p>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800 text-xs">
+                        <div class="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                            <span class="block text-slate-400">
+                                <span data-he>ציוד ששמש</span>
+                                <span data-en>Equipment</span>
+                            </span>
+                            <span id="modalEquip" class="font-bold text-white"></span>
+                        </div>
+                        <div class="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                            <span class="block text-slate-400">
+                                <span data-he>איכות / פורמט</span>
+                                <span data-en>Quality / Format</span>
+                            </span>
+                            <span id="modalQuality" class="font-bold text-white"></span>
+                        </div>
+                        <div class="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50 col-span-2 sm:col-span-1">
+                            <span class="block text-slate-400">
+                                <span data-he>סוג הפרויקט</span>
+                                <span data-en>Project Type</span>
+                            </span>
+                            <span id="modalType" class="font-bold text-emerald-400"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer Action -->
+            <div class="p-6 border-t border-slate-800 bg-slate-950 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span class="text-xs text-slate-400">
+                    <span data-he>רוצה להשיק פרויקט דומה לנכס שלך?</span>
+                    <span data-en>Want a similar showcase for your property?</span>
+                </span>
+                <button id="modalBookBtn" onclick="bookSimilarProject()" class="w-full sm:w-auto px-6 py-3 rounded-full bg-emerald-500 text-slate-950 font-black text-xs hover:bg-emerald-400 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span data-he>הזמן פרויקט דומה</span>
+                    <span data-en>Book Similar Project</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
     <script>
-        // Language Toggle
+        // Language Toggle Logic
         const langBtn = document.getElementById('langToggle');
         langBtn.addEventListener('click', () => {
             const currentLang = document.documentElement.getAttribute('lang');
@@ -294,6 +967,207 @@
             document.documentElement.setAttribute('lang', newLang);
             document.documentElement.setAttribute('dir', newLang === 'he' ? 'rtl' : 'ltr');
         });
+
+        // Portfolio Category Filter Logic
+        function filterCategory(category) {
+            const cards = document.querySelectorAll('.project-card');
+            const btns = document.querySelectorAll('.cat-btn');
+
+            btns.forEach(btn => {
+                btn.classList.remove('bg-emerald-500', 'text-slate-950', 'border-emerald-500', 'shadow-md');
+                btn.classList.add('border-slate-700', 'bg-slate-800/60', 'text-slate-300');
+            });
+
+            const activeBtn = document.getElementById(`btn-cat-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('border-slate-700', 'bg-slate-800/60', 'text-slate-300');
+                activeBtn.classList.add('bg-emerald-500', 'text-slate-950', 'border-emerald-500', 'shadow-md');
+            }
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-cat') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Modal Project Details Data
+        const projectsData = {
+            1: {
+                titleHe: "מגדל היוקרה - תל אביב",
+                titleEn: "Luxury Tower - Tel Aviv",
+                catHe: "צילום רחפן 4K",
+                catEn: "4K Drone Aerial",
+                img: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80",
+                descHe: "פרויקט צילום רחפן קולנועי בגובה 120 מטר להדגשת קו האופק, חוף הים והאדריכלות המרהיבה של מגדל מגורים יוקרתי בתל אביב. הצילומים שימשו לקמפיין שיווק בינלאומי של חברת הנדל\"ן.",
+                descEn: "Cinematic 4K drone cinematography showcasing the Mediterranean coastline and skyline surrounding an exclusive Tel Aviv residential tower for international campaign marketing.",
+                equip: "DJI Mavic 3 Cine (Apple ProRes)",
+                quality: "4K Ultra HD 60fps",
+                type: "נדל\"ן למגורים / Residential"
+            },
+            2: {
+                titleHe: "פנטהאוז 360° - הרצליה פיתוח",
+                titleEn: "360° Penthouse - Herzliya Pituach",
+                catHe: "מיפוי 360°",
+                catEn: "360° Virtual Mapping",
+                img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+                descHe: "מיפוי פנים תלת-ממדי מקיף של פנטהאוז 350 מ\"ר עם בריכה פרטית. הסיור כולל שילוב נקודות מידע אינטראקטיביות, מדידות מדויקות, ומעבר חלק בין חללי הבית.",
+                descEn: "Full 3D interior virtual walkthrough of a 350 sqm penthouse featuring interactive hotspots, spatial measurements, and seamless room transitions.",
+                equip: "Matterport Pro2 3D Camera",
+                quality: "134 MP HDR 4K 360°",
+                type: "פנטהאוז יוקרה / Luxury Real Estate"
+            },
+            3: {
+                titleHe: "סרטון תדמית וילה ארכיטקטונית",
+                titleEn: "Architectural Villa Promo Film",
+                catHe: "הפקת וידאו",
+                catEn: "Video Reel",
+                img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+                descHe: "הפקת וידאו קולנועית המשלבת טיסות FPV מהירות דרך סלון הווילה, חצר הבריכה וחדרי האירוח, לצד צילומי קרקע מייוצבים בגובה עיניים ופס-קול קצבי מותאם.",
+                descEn: "Cinematic promotional reel blending smooth indoor FPV drone flythroughs with ground camera stabilizer movements and custom soundtrack design.",
+                equip: "FPV Drone + Sony Cinema",
+                quality: "4K HDR Color Graded",
+                type: "וילה פרטית / Architectural Villa"
+            },
+            4: {
+                titleHe: "עיצוב פנים - אחוזת בסביון",
+                titleEn: "Interior Design - Savyon Estate",
+                catHe: "תמונות סטילס HDR",
+                catEn: "HDR Stills",
+                img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+                descHe: "סדרת צילומי סטילס ארכיטקטוניים עבור מעצבי פנים בולטים. שימוש בטכניקת חשיפות מרובות (Bracketing) להשגת איזון מושלם בין תאורת חוץ לתאורת פנים.",
+                descEn: "Architectural HDR stills portfolio for top interior designers. Utilizes multi-exposure bracketed photography to blend indoor ambiance with natural outdoor light.",
+                equip: "Sony Alpha 7R IV + 12-24mm GM",
+                quality: "61 Megapixels Raw HDR",
+                type: "עיצוב פנים / Architecture"
+            },
+            5: {
+                titleHe: "מיפוי אתר בנייה ופיתוח",
+                titleEn: "Construction Site Progress Tour",
+                catHe: "מיפוי 360°",
+                catEn: "360° Site Mapping",
+                img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80",
+                descHe: "תיעוד ומיפוי 360 מעלות תקופתי של אתר בנייה מסחרי. מעקב התקדמות חודשי עבור יזמי נדל\"ן וצוותי הנדסה לניהול יעיל של לוחות זמנים.",
+                descEn: "Periodic 360° site mapping for commercial development. Tracks monthly structural progression for developers and civil engineering teams.",
+                equip: "Insta360 Pro 2 + Drone Photogrammetry",
+                quality: "8K 360° Spherical",
+                type: "בנייה ותשתיות / Construction"
+            },
+            6: {
+                titleHe: "מתחם מסחרי - פארק המדע",
+                titleEn: "Commercial Hub - Tech Park",
+                catHe: "צילום רחפן 4K",
+                catEn: "4K Commercial Drone",
+                img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+                descHe: "צילומי רחפן זוהר בשעת שקיעה (Golden Hour) עבור פארק הייטק ומשרדים. הצילומים מדגישים את הנגישות, עיצוב המבנים והשטחים הירוקים.",
+                descEn: "Golden hour aerial drone photography for a high-tech office park, emphasizing architectural aesthetics and surrounding parkways.",
+                equip: "DJI Mavic 3 Cine",
+                quality: "4K Ultra HD",
+                type: "נדל\"ן מסחרי / Commercial"
+            }
+        };
+
+        let activeModalProject = null;
+
+        function openModal(id) {
+            const data = projectsData[id];
+            if (!data) return;
+            activeModalProject = data;
+
+            const isHe = document.documentElement.getAttribute('lang') === 'he';
+
+            document.getElementById('modalTitle').textContent = isHe ? data.titleHe : data.titleEn;
+            document.getElementById('modalCategory').textContent = isHe ? data.catHe : data.catEn;
+            document.getElementById('modalImage').src = data.img;
+            document.getElementById('modalDescription').textContent = isHe ? data.descHe : data.descEn;
+            document.getElementById('modalEquip').textContent = data.equip;
+            document.getElementById('modalQuality').textContent = data.quality;
+            document.getElementById('modalType').textContent = data.type;
+
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('projectModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function bookSimilarProject() {
+            closeModal();
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            if (activeModalProject) {
+                const msgBox = document.getElementById('messageBox');
+                if (msgBox) {
+                    const isHe = document.documentElement.getAttribute('lang') === 'he';
+                    msgBox.value = isHe 
+                        ? `שלום הדס, אני מעוניין לקבל הצעת מחיר לפרויקט דומה ל-"${activeModalProject.titleHe}".`
+                        : `Hi Hadas, I would like to request a proposal for a project similar to "${activeModalProject.titleEn}".`;
+                }
+            }
+        }
+
+
+
+        // 360 Tour Interactive Pan Logic
+        let tourOffset = 0;
+        let isDragging = false;
+        let startX = 0;
+
+        const tourViewer = document.getElementById('tourViewer');
+        const tourImage = document.getElementById('tourImage');
+
+        if (tourViewer && tourImage) {
+            tourViewer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const deltaX = e.clientX - startX;
+                startX = e.clientX;
+                panTour(deltaX);
+            });
+
+            // Touch support for mobile
+            tourViewer.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isDragging = true;
+                    startX = e.touches[0].clientX;
+                }
+            });
+
+            window.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging || e.touches.length !== 1) return;
+                const deltaX = e.touches[0].clientX - startX;
+                startX = e.touches[0].clientX;
+                panTour(deltaX);
+            });
+        }
+
+        function panTour(delta) {
+            if (!tourImage) return;
+            tourOffset += delta;
+            if (tourOffset > 300) tourOffset = 300;
+            if (tourOffset < -400) tourOffset = -400;
+            tourImage.style.transform = `translateX(${tourOffset}px)`;
+        }
 
         // Flying Drone Scroll Logic
         window.addEventListener('scroll', () => {
@@ -316,79 +1190,77 @@
             drone.style.transform = `rotate(${tilt}deg)`;
         });
 
-        // Contact Form Handler with Direct n8n Fallback for GitHub Pages
+        // Contact Form Submission Handler with n8n Webhook Fallback
         const form = document.getElementById('contactForm');
         const N8N_DIRECT_WEBHOOK = 'https://pasternak.app.n8n.cloud/webhook/contact';
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const status = document.getElementById('formStatus');
-            const isHe = document.documentElement.getAttribute('lang') === 'he';
-            
-            btn.disabled = true;
-            status.className = "mt-4 font-bold text-white/90";
-            status.textContent = isHe ? "שולח הודעה..." : "SENDING MESSAGE...";
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('submitBtn');
+                const status = document.getElementById('formStatus');
+                const isHe = document.documentElement.getAttribute('lang') === 'he';
+                
+                btn.disabled = true;
+                status.className = "mt-4 font-bold text-emerald-400";
+                status.textContent = isHe ? "שולח הודעה..." : "SENDING MESSAGE...";
 
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
 
-            try {
-                let res = null;
-                let isSuccess = false;
-
-                // 1. Try server backend /api/contact if running on Node environment
                 try {
-                    res = await fetch('/api/contact', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
-                    if (res && res.ok) {
-                        const json = await res.json().catch(() => ({ success: true }));
-                        if (json.success) isSuccess = true;
+                    let isSuccess = false;
+
+                    // 1. Try server backend /api/contact if running on Node environment
+                    try {
+                        const res = await fetch('/api/contact', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        });
+                        if (res && res.ok) {
+                            const json = await res.json().catch(() => ({ success: true }));
+                            if (json.success) isSuccess = true;
+                        }
+                    } catch (err) {
+                        console.log('Server backend /api/contact not available. Falling back to direct n8n webhook.');
+                    }
+
+                    // 2. Direct fallback to n8n webhook
+                    if (!isSuccess) {
+                        const n8nRes = await fetch(N8N_DIRECT_WEBHOOK, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                ...data,
+                                submittedAt: new Date().toISOString(),
+                                source: 'Hadas Pasternak Website'
+                            })
+                        });
+
+                        if (n8nRes.ok || n8nRes.status >= 200 && n8nRes.status < 300) {
+                            isSuccess = true;
+                        }
+                    }
+
+                    if (isSuccess) {
+                        status.className = "mt-4 font-bold text-emerald-300 bg-slate-900/90 p-4 rounded-xl border border-emerald-500/40 shadow-xl";
+                        status.textContent = isHe 
+                            ? "✓ ההודעה נשלחה בהצלחה! נחזור אליך בהקדם." 
+                            : "✓ Message sent successfully! We will contact you shortly.";
+                        form.reset();
+                    } else {
+                        throw new Error('Failed to send message');
                     }
                 } catch (err) {
-                    console.log('Server backend /api/contact not available (e.g. GitHub Pages static mode). Falling back to direct n8n webhook.');
+                    console.error('Contact submission error:', err);
+                    status.className = "mt-4 font-bold text-red-300 bg-slate-900/90 p-4 rounded-xl border border-red-500/40 shadow-xl";
+                    status.textContent = isHe ? "✕ שגיאה בשליחה - אנא נסה שנית או פנה בוואטסאפ" : "✕ Submission error - please try again or contact via WhatsApp";
+                } finally {
+                    btn.disabled = false;
                 }
-
-                // 2. If /api/contact was not available (e.g., 404 on GitHub Pages), send directly to n8n webhook
-                if (!isSuccess) {
-                    console.log('Sending directly to n8n webhook...');
-                    const n8nRes = await fetch(N8N_DIRECT_WEBHOOK, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            ...data,
-                            submittedAt: new Date().toISOString(),
-                            source: 'Hadas Pasternak Website (GitHub Pages / Static)'
-                        })
-                    });
-
-                    if (n8nRes.ok || n8nRes.status === 200 || n8nRes.status === 201) {
-                        isSuccess = true;
-                    } else if (n8nRes.status >= 200 && n8nRes.status < 300) {
-                        isSuccess = true;
-                    }
-                }
-
-                if (isSuccess) {
-                    status.className = "mt-4 font-bold text-green-300 bg-black/40 p-3 rounded-lg border border-green-400/30";
-                    status.textContent = isHe 
-                        ? "✓ ההודעה נשלחה בהצלחה! נחזור אליך בהקדם." 
-                        : "✓ Message sent successfully! We will get back to you shortly.";
-                    form.reset();
-                } else {
-                    throw new Error('Failed to send message');
-                }
-            } catch (err) {
-                console.error('Contact submission error:', err);
-                status.className = "mt-4 font-bold text-red-300 bg-black/40 p-3 rounded-lg border border-red-400/30";
-                status.textContent = isHe ? "✕ שגיאה בשליחה - אנא נסה שנית" : "✕ Error sending - please try again";
-            } finally {
-                btn.disabled = false;
-            }
-        });
+            });
+        }
     </script>
 </body>
 </html>
